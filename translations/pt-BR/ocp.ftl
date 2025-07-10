@@ -71,6 +71,7 @@ english = Inglês
 french = Francês
 portuguese = Português
 spanish = Espanhol
+dutch = Holandés
 play_sound = Som nos lances:
 auto_load = Carregar próx. problema automaticamente:
 flip_board = Girar tabuleiro:

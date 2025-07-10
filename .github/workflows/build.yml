@@ -14,9 +14,7 @@ env:
 
 jobs:
   build-linux:
-
     runs-on: ubuntu-latest
-
     name: Build Linux
     steps:
       - uses: actions/checkout@v4
@@ -48,9 +46,7 @@ jobs:
           include-hidden-files: true
 
   build-mac:
-
     runs-on: macos-latest
-
     name: Build mac
     steps:
       - uses: actions/checkout@v4
@@ -78,9 +74,7 @@ jobs:
           include-hidden-files: true
 
   build-windows-64:
-
     runs-on: windows-latest
-
     name: Build Windows 64-bit
     steps:
       - uses: actions/checkout@v4
@@ -116,9 +110,7 @@ jobs:
           include-hidden-files: true
 
   build-windows-32:
-
     runs-on: windows-latest
-
     name: Build Windows 32-bit
     steps:
       - uses: actions/checkout@v4
