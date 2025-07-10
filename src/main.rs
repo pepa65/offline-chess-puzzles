@@ -1227,7 +1227,7 @@ fn gen_view<'a>(
 		.push(pagination_row);
 	if !engine_eval.is_empty() {
 		board_col = board_col.push(
-			row![Text::new(lang::tr(lang, "eval") + engine_eval), Text::new(lang::tr(lang, "best_move") + engine_move)]
+			row![Text::new(lang::tr(lang, "eval") + engine_eval).size(20).color(YELLOW), Text::new(lang::tr(lang, "best_move") + engine_move).size(20).color(GREEN)]
 				.padding(5)
 				.spacing(15),
 		);
