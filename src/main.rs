@@ -608,7 +608,7 @@ impl OfflinePuzzles {
 				if let Some(puzzles_vec) = puzzles_vec {
 					if !puzzles_vec.is_empty() {
 						self.puzzle_tab.puzzles = puzzles_vec;
-						self.puzzle_tab.puzzles.shuffle(&mut rand::rng());
+						self.puzzle_tab.puzzles.shuffle(&mut rand::thread_rng());
 						self.puzzle_tab.current_puzzle = 0;
 						self.puzzle_number_ui = String::from("1");
 						self.load_puzzle(false);
