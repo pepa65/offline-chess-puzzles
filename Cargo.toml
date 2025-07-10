@@ -1,6 +1,6 @@
 [package]
 name = "offline-chess-puzzles"
-version = "2.5.0"
+version = "2.5.1"
 edition = "2024"
 authors = ["brianch <brianch@users.noreply.github.com>", "github.com/pepa65"]
 description = "Tool to view and solve puzzles from the lichess puzzle database"
@@ -18,7 +18,8 @@ target-arch = "X86_64"
 [dependencies]
 iced = { version = "0.13.1", default-features = false, features = ["svg", "tokio", "lazy", "advanced"] }
 iced_aw = { version = "0", default-features = false, features = ["tabs"] }
-iced_drop = {git = "https://github.com/jhannyj/iced_drop.git", rev="d259ec4dff098852d995d3bcaa5551a88330636f"}
+#iced_drop = {git = "https://github.com/jhannyj/iced_drop.git", rev="d259ec4dff098852d995d3bcaa5551a88330636f"}
+iced_drop = "0"
 rand = "0"
 chess = "3.2.0"
 csv = "1.3.1"

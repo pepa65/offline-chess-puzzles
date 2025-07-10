@@ -1227,9 +1227,12 @@ fn gen_view<'a>(
 		.push(pagination_row);
 	if !engine_eval.is_empty() {
 		board_col = board_col.push(
-			row![Text::new(lang::tr(lang, "eval") + engine_eval).size(20).color(YELLOW), Text::new(lang::tr(lang, "best_move") + engine_move).size(20).color(GREEN)]
-				.padding(5)
-				.spacing(15),
+			row![
+				Text::new(lang::tr(lang, "eval") + engine_eval).size(20).color(YELLOW),
+				Text::new(lang::tr(lang, "best_move") + engine_move).size(20).color(GREEN)
+			]
+			.padding(5)
+			.spacing(15),
 		);
 	}
 	if mini_ui {

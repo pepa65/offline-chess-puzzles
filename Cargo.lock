@@ -2170,8 +2170,9 @@ dependencies = [
 
 [[package]]
 name = "iced_drop"
-version = "0.1.0"
-source = "git+https://github.com/jhannyj/iced_drop.git?rev=d259ec4dff098852d995d3bcaa5551a88330636f#d259ec4dff098852d995d3bcaa5551a88330636f"
+version = "0.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e3fa4fc8e2fb6b8ade7e396cdeb435506055fdc97ea547f79110d36fbd4be78b"
 dependencies = [
  "iced",
 ]

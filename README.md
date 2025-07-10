@@ -1,10 +1,12 @@
 [![Build](https://github.com/pepa65/offline-chess-puzzles/actions/workflows/build.yml/badge.svg)](https://github.com/pepa65/offline-chess-puzzles/actions/workflows/build.yml)
-# offline-chess-puzzles 2.5.0
+# offline-chess-puzzles 2.5.1
 **A simple tool to view and solve puzzles from the lichess puzzle database**
 
 A big thank you to lichess for creating the [puzzle database](https://database.lichess.org/#puzzles), to the project [chess-engine](https://github.com/adam-mcdaniel/chess-engine/) which I used as a starting point for the GUI here, and to the awesome [Iced GUI library](https://github.com/iced-rs/iced) project in which the interface is made.
 
 Cloned from https://github.com/brianch/offline-chess-puzzles: tweaked the clarity of messages and added Dutch translation.
+
+To build the binary with Rust cargo, these packages are required: `libasound2-dev` `libgtk-3-dev` `libsqlite3-dev`
 
 ## Usage
 Download the app in the [Releases page](https://github.com/pepa65/offline-chess-puzzles/releases).
