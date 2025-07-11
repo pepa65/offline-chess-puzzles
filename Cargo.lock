@@ -2181,9 +2181,9 @@ dependencies = [
 
 [[package]]
 name = "iced_drop"
-version = "0.1.1"
+version = "0.1.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e3fa4fc8e2fb6b8ade7e396cdeb435506055fdc97ea547f79110d36fbd4be78b"
+checksum = "4ef5323a53d69ce7bf6cf3380fd11da9669318bd5dd51f743b400410a4c9e5ce"
 dependencies = [
  "iced",
 ]
@@ -3462,7 +3462,7 @@ dependencies = [
 
 [[package]]
 name = "offline-chess-puzzles"
-version = "2.5.2"
+version = "2.5.3"
 dependencies = [
  "chess",
  "csv",
