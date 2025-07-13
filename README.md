@@ -2,7 +2,7 @@
 # offline-chess-puzzles 2.5.4
 **A simple tool to view and solve puzzles from the lichess puzzle database**
 
-<img src="https://github.com/brianch/offline-chess-puzzles/assets/5335499/4aff9fa1-28e1-413b-88eb-fad0fcd95389" width="400"/>
+<img src="https://github.com/pepa65/offline-chess-puzzles/blob/main/demo.gif">
 
 A big thank you to lichess for creating the [puzzle database](https://database.lichess.org/#puzzles), to the project [chess-engine](https://github.com/adam-mcdaniel/chess-engine/) which I used as a starting point for the GUI here, and to the awesome [Iced GUI library](https://github.com/iced-rs/iced) project in which the interface is made.
 
