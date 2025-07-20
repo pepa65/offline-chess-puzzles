@@ -1,5 +1,5 @@
 [![Build](https://github.com/pepa65/offline-chess-puzzles/actions/workflows/build.yml/badge.svg)](https://github.com/pepa65/offline-chess-puzzles/actions/workflows/build.yml)
-# offline-chess-puzzles 2.5.7
+# offline-chess-puzzles 2.5.8
 **A simple tool to view and solve puzzles from the lichess puzzle database**
 
 <img src="https://github.com/pepa65/offline-chess-puzzles/blob/main/demo.gif">
