@@ -2172,9 +2172,9 @@ dependencies = [
 
 [[package]]
 name = "iced_drop"
-version = "0.1.6"
+version = "0.1.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6dd49c083e81b7e227bf0b051b19eb8290ab28be25c09809484aa831862b54e5"
+checksum = "61744709e4c8ba815e92abc1b21d7aecc6b000185291a50cddfb43063a0d6f92"
 dependencies = [
  "iced",
 ]
@@ -3454,7 +3454,7 @@ dependencies = [
 
 [[package]]
 name = "offline-chess-puzzles"
-version = "2.5.10"
+version = "2.5.11"
 dependencies = [
  "chess",
  "csv",
@@ -3607,9 +3607,9 @@ dependencies = [
 
 [[package]]
 name = "owned_ttf_parser"
-version = "0.25.0"
+version = "0.25.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "22ec719bbf3b2a81c109a4e20b1f129b5566b7dce654bc3872f6a05abf82b2c4"
+checksum = "36820e9051aca1014ddc75770aab4d68bc1e9e632f0f5627c4086bc216fb583b"
 dependencies = [
  "ttf-parser 0.25.1",
 ]
