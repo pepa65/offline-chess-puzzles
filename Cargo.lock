@@ -2172,9 +2172,9 @@ dependencies = [
 
 [[package]]
 name = "iced_drop"
-version = "0.1.7"
+version = "0.1.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "61744709e4c8ba815e92abc1b21d7aecc6b000185291a50cddfb43063a0d6f92"
+checksum = "f691641eab298609b3dfb2e8760f274c48366ef7bd99e6cffdfc24d1cb32b92f"
 dependencies = [
  "iced",
 ]
@@ -3454,7 +3454,7 @@ dependencies = [
 
 [[package]]
 name = "offline-chess-puzzles"
-version = "2.5.11"
+version = "2.5.12"
 dependencies = [
  "chess",
  "csv",
@@ -4070,9 +4070,9 @@ checksum = "c3d6831663a5098ea164f89cff59c6284e95f4e3c76ce9848d4529f5ccca9bde"
 
 [[package]]
 name = "rangemap"
-version = "1.5.1"
+version = "1.6.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f60fcc7d6849342eff22c4350c8b9a989ee8ceabc4b481253e8946b9fe83d684"
+checksum = "f93e7e49bb0bf967717f7bd674458b3d6b0c5f48ec7e3038166026a69fc22223"
 
 [[package]]
 name = "raw-window-handle"
