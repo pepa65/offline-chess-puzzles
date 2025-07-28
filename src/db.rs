@@ -5,10 +5,9 @@ use std::env;
 
 use crate::config::Puzzle;
 use crate::models::NewFavorite;
+use crate::openings::{Openings, Variation};
 use crate::schema::favs;
 use crate::schema::favs::dsl::*;
-
-use crate::openings::{Openings, Variation};
 use crate::search_tab::{OpeningSide, TacticalThemes};
 
 pub fn establish_connection() -> SqliteConnection {

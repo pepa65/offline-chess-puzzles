@@ -18,3 +18,4 @@ struct_lit_width = 120
 struct_variant_width = 120
 array_width = 120
 chain_width = 120
+reorder_imports = true

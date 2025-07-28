@@ -1,6 +1,5 @@
 #![windows_subsystem = "windows"]
 
-use download_db::download_lichess_db;
 use eval::{Engine, EngineStatus};
 use iced::advanced::widget::Id as GenericId;
 use iced::color;
@@ -33,9 +32,10 @@ use rand::seq::SliceRandom;
 
 mod config;
 pub mod download_db;
+use download_db::download_lichess_db;
 mod search_tab;
-mod styles;
 use search_tab::{SearchMesssage, SearchTab};
+mod styles;
 
 mod settings;
 use settings::{SettingsMessage, SettingsTab};

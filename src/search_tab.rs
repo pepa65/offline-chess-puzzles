@@ -6,12 +6,12 @@ use std::io::BufReader;
 
 use crate::config::load_config;
 use crate::styles::PieceTheme;
-use crate::{Message, Tab, config, db, lang, openings, styles};
+use crate::{Message, Tab, config, db, lang, styles};
 use chess::{PROMOTION_PIECES, Piece};
 use iced_aw::TabLabel;
 
-use lang::{DisplayTranslated, PickListWrapper};
-use openings::{Openings, Variation};
+use crate::lang::{DisplayTranslated, PickListWrapper};
+use crate::openings::{Openings, Variation};
 
 #[derive(Debug, Clone)]
 pub enum SearchMesssage {
