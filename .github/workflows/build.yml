@@ -24,6 +24,7 @@ jobs:
       - name: Prepare directory to upload as an artifact
         run: |
           mkdir zip
+          mkdir zip/offline-chess-puzzles
           mkdir zip/offline-chess-puzzles/include
           cp -R include/pieces zip/offline-chess-puzzles/include/
           cp LICENSE zip/offline-chess-puzzles/
