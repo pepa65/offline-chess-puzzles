@@ -18,9 +18,8 @@ target-arch = "X86_64"
 [dependencies]
 iced = { version = "0.13.1", default-features = false, features = ["svg", "tokio", "lazy", "advanced"] }
 iced_aw = { version = "0", default-features = false, features = ["tabs"] }
-#iced_drop = {git = "https://github.com/jhannyj/iced_drop.git", rev="d259ec4dff098852d995d3bcaa5551a88330636f"}
-iced_drop = "0"
-rand = "0"
+iced_drop = "0.1"
+rand = "0.9"
 chess = "3.2.0"
 csv = "1.3.1"
 serde = "1.0.217"
@@ -34,7 +33,7 @@ fluent-bundle = "0"
 intl-memoizer = "0.5.2"
 once_cell = "1.20.2"
 unic-langid = { version = "0.9.5", features = ["macros"] }
-diesel = { version = "2", features = ["sqlite"] }
+diesel = { version = "2.2.12", features = ["sqlite"] }
 dotenvy = "0.15.7"
 lopdf = "0"
 open = "5.3.2"
@@ -42,7 +41,7 @@ rfd = "0.15.2"
 image = { version = "0.25.5", default-features = false, features = ["jpeg"] }
 
 [target.'cfg(windows)'.dependencies]
-libsqlite3-sys = { version = "0", features = ["bundled"] }
+libsqlite3-sys = { version = "0.35.0", features = ["bundled"] }
 
 [profile.release]
 opt-level = "z"
