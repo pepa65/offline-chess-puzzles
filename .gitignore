@@ -1,3 +1,5 @@
-/target
-/puzzles/lichess_db_puzzle.csv
+/lichess_db_puzzle.csv
 /offline-chess-puzzles
+/settings.json
+/target
+/*.db

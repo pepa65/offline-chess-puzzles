@@ -12,11 +12,11 @@ use iced::window::{self, Screenshot};
 use iced::{Alignment, Length, Task, alignment};
 use iced::{Element, Rectangle, Size, Subscription, Theme};
 use image::RgbaImage;
+//use include_dir::{include_dir, Dir};
 use rfd::AsyncFileDialog;
 use std::borrow::Cow;
 use std::collections::HashMap;
-use std::fs::File as StdFile;
-use std::io::BufReader;
+use std::io::Cursor;
 use std::path::Path;
 use std::str::FromStr;
 use styles::PieceTheme;
@@ -25,8 +25,7 @@ use tokio::sync::mpsc::{self, Sender};
 use chess::{ALL_SQUARES, Board, BoardStatus, ChessMove, Color, File, Game, Piece, Rank, Square};
 use iced_aw::{TabLabel, Tabs};
 
-use rodio::source::{Buffered, Source};
-use rodio::{Decoder, OutputStream, OutputStreamHandle};
+use rodio::{Decoder, OutputStream, OutputStreamBuilder, Sink};
 
 use rand::seq::SliceRandom;
 
@@ -64,6 +63,10 @@ const LICHESS_DB_URL: &str = "https://database.lichess.org/lichess_db_puzzle.csv
 const RED: iced::Color = color!(0xff0000);
 const GREEN: iced::Color = color!(0x00ff00);
 const YELLOW: iced::Color = color!(0xffff00);
+const ONE_PIECE: &[u8] = include_bytes!("../include/1piece.ogg");
+const TWO_PIECES: &[u8] = include_bytes!("../include/2pieces.ogg");
+//const PIECES: Dir = include_dir!("include/pieces");
+
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
 pub struct PositionGUI {
 	row: i32,
@@ -137,62 +140,50 @@ pub enum Message {
 }
 
 struct SoundPlayback {
-	// it's not directly used, but we need to keep it: https://github.com/RustAudio/rodio/issues/330
 	#[allow(dead_code)]
 	stream: OutputStream,
-	handle: OutputStreamHandle,
-	one_piece_sound: Buffered<Decoder<BufReader<StdFile>>>,
-	two_pieces_sound: Buffered<Decoder<BufReader<StdFile>>>,
 }
 
 impl SoundPlayback {
-	pub const ONE_PIECE_SOUND: u8 = 0;
-	pub const TWO_PIECE_SOUND: u8 = 1;
 	pub fn init_sound() -> Option<Self> {
 		let mut sound_playback = None;
-		if let Ok((stream, handle)) = OutputStream::try_default() {
-			let one_pieces_sound = StdFile::open("1piece.ogg");
-			let two_pieces_sound = StdFile::open("2pieces.ogg");
-
-			if let (Ok(one_piece), Ok(two_piece)) = (one_pieces_sound, two_pieces_sound) {
-				sound_playback = Some(SoundPlayback {
-					stream,
-					handle,
-					one_piece_sound: Decoder::new(BufReader::new(one_piece)).unwrap().buffered(),
-					two_pieces_sound: Decoder::new(BufReader::new(two_piece)).unwrap().buffered(),
-				});
-			}
+		if let Ok(mut stream) = OutputStreamBuilder::open_default_stream() {
+			stream.log_on_drop(false);
+			sound_playback = Some(SoundPlayback { stream });
 		}
 		sound_playback
 	}
-	pub fn play_audio(&self, audio: u8) {
-		let audio = match audio {
-			SoundPlayback::ONE_PIECE_SOUND => self.one_piece_sound.clone(),
-			_ => self.two_pieces_sound.clone(),
-		};
-		if let Err(e) = self.handle.play_raw(audio.convert_samples()) {
-			eprintln!("{e}");
-		}
+	pub fn play_one(&self) {
+		let cursor = Cursor::new(ONE_PIECE);
+		let one_piece = Decoder::new(cursor).unwrap();
+		let sink = Sink::connect_new(self.stream.mixer());
+		sink.append(one_piece);
+	}
+	pub fn play_two(&self) {
+		let cursor = Cursor::new(TWO_PIECES);
+		let two_pieces = Decoder::new(cursor).unwrap();
+		let sink = Sink::connect_new(self.stream.mixer());
+		sink.append(two_pieces);
 	}
 }
 
 fn get_image_handles(theme: &PieceTheme) -> Vec<Handle> {
-	let mut handles = Vec::<Handle>::with_capacity(12);
+	let mut handles = Vec::<Handle>::with_capacity(12); // All different pieces & colors
 	let theme_str = &theme.to_string();
+	handles.insert(PieceWithColor::WhitePawn.index(), Handle::from_path(String::from("include/pieces/") + theme_str + "/wP.svg"));
+	//handles.insert(PieceWithColor::WhitePawn.index(), PIECES.get_file(theme_str + "/wP.svg"));
+	handles.insert(PieceWithColor::WhiteRook.index(), Handle::from_path(String::from("include/pieces/") + theme_str + "/wR.svg"));
+	handles.insert(PieceWithColor::WhiteKnight.index(), Handle::from_path(String::from("include/pieces/") + theme_str + "/wN.svg"));
+	handles.insert(PieceWithColor::WhiteBishop.index(), Handle::from_path(String::from("include/pieces/") + theme_str + "/wB.svg"));
+	handles.insert(PieceWithColor::WhiteQueen.index(), Handle::from_path(String::from("include/pieces/") + theme_str + "/wQ.svg"));
+	handles.insert(PieceWithColor::WhiteKing.index(), Handle::from_path(String::from("include/pieces/") + theme_str + "/wK.svg"));
 
-	handles.insert(PieceWithColor::WhitePawn.index(), Handle::from_path(String::from("pieces/") + theme_str + "/wP.svg"));
-	handles.insert(PieceWithColor::WhiteRook.index(), Handle::from_path(String::from("pieces/") + theme_str + "/wR.svg"));
-	handles.insert(PieceWithColor::WhiteKnight.index(), Handle::from_path(String::from("pieces/") + theme_str + "/wN.svg"));
-	handles.insert(PieceWithColor::WhiteBishop.index(), Handle::from_path(String::from("pieces/") + theme_str + "/wB.svg"));
-	handles.insert(PieceWithColor::WhiteQueen.index(), Handle::from_path(String::from("pieces/") + theme_str + "/wQ.svg"));
-	handles.insert(PieceWithColor::WhiteKing.index(), Handle::from_path(String::from("pieces/") + theme_str + "/wK.svg"));
-
-	handles.insert(PieceWithColor::BlackPawn.index(), Handle::from_path(String::from("pieces/") + theme_str + "/bP.svg"));
-	handles.insert(PieceWithColor::BlackRook.index(), Handle::from_path(String::from("pieces/") + theme_str + "/bR.svg"));
-	handles.insert(PieceWithColor::BlackKnight.index(), Handle::from_path(String::from("pieces/") + theme_str + "/bN.svg"));
-	handles.insert(PieceWithColor::BlackBishop.index(), Handle::from_path(String::from("pieces/") + theme_str + "/bB.svg"));
-	handles.insert(PieceWithColor::BlackQueen.index(), Handle::from_path(String::from("pieces/") + theme_str + "/bQ.svg"));
-	handles.insert(PieceWithColor::BlackKing.index(), Handle::from_path(String::from("pieces/") + theme_str + "/bK.svg"));
+	handles.insert(PieceWithColor::BlackPawn.index(), Handle::from_path(String::from("include/pieces/") + theme_str + "/bP.svg"));
+	handles.insert(PieceWithColor::BlackRook.index(), Handle::from_path(String::from("include/pieces/") + theme_str + "/bR.svg"));
+	handles.insert(PieceWithColor::BlackKnight.index(), Handle::from_path(String::from("include/pieces/") + theme_str + "/bN.svg"));
+	handles.insert(PieceWithColor::BlackBishop.index(), Handle::from_path(String::from("include/pieces/") + theme_str + "/bB.svg"));
+	handles.insert(PieceWithColor::BlackQueen.index(), Handle::from_path(String::from("include/pieces/") + theme_str + "/bQ.svg"));
+	handles.insert(PieceWithColor::BlackKing.index(), Handle::from_path(String::from("include/pieces/") + theme_str + "/bK.svg"));
 
 	handles
 }
@@ -360,7 +351,7 @@ impl OfflinePuzzles {
 				}
 				if self.settings_tab.saved_configs.play_sound {
 					if let Some(audio) = &self.sound_playback {
-						audio.play_audio(SoundPlayback::ONE_PIECE_SOUND);
+						audio.play_one();
 					}
 				}
 			}
@@ -393,7 +384,7 @@ impl OfflinePuzzles {
 				if self.puzzle_tab.current_puzzle_move == correct_moves.len() {
 					if self.settings_tab.saved_configs.play_sound {
 						if let Some(audio) = &self.sound_playback {
-							audio.play_audio(SoundPlayback::ONE_PIECE_SOUND);
+							audio.play_one();
 						}
 					}
 					if self.puzzle_tab.current_puzzle < self.puzzle_tab.puzzles.len() - 1 {
@@ -423,7 +414,7 @@ impl OfflinePuzzles {
 				} else {
 					if self.settings_tab.saved_configs.play_sound {
 						if let Some(audio) = &self.sound_playback {
-							audio.play_audio(SoundPlayback::TWO_PIECE_SOUND);
+							audio.play_two();
 						}
 					}
 					movement = ChessMove::new(

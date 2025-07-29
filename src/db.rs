@@ -12,9 +12,28 @@ use crate::search_tab::{OpeningSide, TacticalThemes};
 
 pub fn establish_connection() -> SqliteConnection {
 	dotenv().ok();
-
-	let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
-	SqliteConnection::establish(&database_url).unwrap_or_else(|_| panic!("Error connecting to {}", database_url))
+	let database_url = env::var("DATABASE_URL").unwrap_or("offline-chess-puzzles-favorites.db".to_string());
+	let mut conn = SqliteConnection::establish(&database_url).unwrap_or_else(|_| panic!("Error connecting to {}", database_url));
+	let init = concat!(
+		"CREATE TABLE IF NOT EXISTS favs (",
+		"puzzle_id TEXT NOT NULL PRIMARY KEY,",
+		"fen TEXT NOT NULL,",
+		"moves TEXT NOT NULL,",
+		"rating INTEGER NOT NULL,",
+		"rd INTEGER NOT NULL,",
+		"popularity INTEGER NOT NULL,",
+		"nb_plays INTEGER NOT NULL,",
+		"themes TEXT NOT NULL,",
+		"game_url TEXT NOT NULL NOT NULL,",
+		"opening_tags TEXT NOT NULL",
+		");",
+		"PRAGMA foreign_keys=OFF;",
+		"COMMIT;"
+	);
+	if let Err(err) = diesel::sql_query(init.to_string()).execute(&mut conn) {
+		panic!("{:?}: can't initialize {}", err, database_url);
+	}
+	conn
 }
 
 pub fn get_favorites(

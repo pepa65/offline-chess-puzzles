@@ -14,7 +14,7 @@ use diesel::prelude::*;
 
 pub static SETTINGS: Lazy<OfflinePuzzlesConfig> = Lazy::new(load_config);
 
-pub const CHESS_ALPHA_BYTES: &[u8] = include_bytes!("../font/Alpha.ttf");
+pub const CHESS_ALPHA_BYTES: &[u8] = include_bytes!("../include/Alpha.ttf");
 pub const CHESS_ALPHA: Font = iced::Font::with_name("Chess Alpha");
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -54,21 +54,21 @@ impl ::std::default::Default for OfflinePuzzlesConfig {
 		Self {
 			engine_path: None,
 			engine_limit: String::from("depth 40"),
-			window_width: 1010.,
-			window_height: 680.,
+			window_width: 1297.,
+			window_height: 1025.,
 			maximized: false,
-			puzzle_db_location: String::from("puzzles/lichess_db_puzzle.csv"),
-			piece_theme: styles::PieceTheme::Cburnett,
-			search_results_limit: 20000,
+			puzzle_db_location: String::from("lichess_db_puzzle.csv"),
+			piece_theme: styles::PieceTheme::Alpha,
+			search_results_limit: 200000,
 			play_sound: true,
-			auto_load_next: true,
+			auto_load_next: false,
 			flip_board: false,
 			show_coordinates: false,
-			board_theme: styles::BoardTheme::default(),
+			board_theme: styles::BoardTheme::BrownDark,
 			lang: lang::Language::English,
 			export_pgs: 50,
-			last_min_rating: 0,
-			last_max_rating: 1000,
+			last_min_rating: 1250,
+			last_max_rating: 1750,
 			last_min_popularity: 0,
 			last_theme: TacticalThemes::All,
 			last_opening: Openings::Any,

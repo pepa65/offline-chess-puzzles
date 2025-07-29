@@ -278,14 +278,14 @@ pub enum SearchBase {
 }
 
 pub fn gen_piece_vec(theme: &PieceTheme) -> Vec<Handle> {
-	let mut handles = Vec::<Handle>::with_capacity(5);
+	let mut handles = Vec::<Handle>::with_capacity(5); // Number of promotion pieces
 	let theme_str = &theme.to_string();
 	// this first entry won't be used, it's there just to fill the vec, so we can index by the Piece
-	handles.insert(0, Handle::from_path("pieces/cburnett/wP.svg"));
-	handles.insert(Piece::Knight.to_index(), Handle::from_path(String::from("pieces/") + theme_str + "/wN.svg"));
-	handles.insert(Piece::Bishop.to_index(), Handle::from_path(String::from("pieces/") + theme_str + "/wB.svg"));
-	handles.insert(Piece::Rook.to_index(), Handle::from_path(String::from("pieces/") + theme_str + "/wR.svg"));
-	handles.insert(Piece::Queen.to_index(), Handle::from_path(String::from("pieces/") + theme_str + "/wQ.svg"));
+	handles.insert(Piece::Pawn.to_index(), Handle::from_path(String::from("include/pieces/") + theme_str + "/wP.svg"));
+	handles.insert(Piece::Knight.to_index(), Handle::from_path(String::from("include/pieces/") + theme_str + "/wN.svg"));
+	handles.insert(Piece::Bishop.to_index(), Handle::from_path(String::from("include/pieces/") + theme_str + "/wB.svg"));
+	handles.insert(Piece::Rook.to_index(), Handle::from_path(String::from("include/pieces/") + theme_str + "/wR.svg"));
+	handles.insert(Piece::Queen.to_index(), Handle::from_path(String::from("include/pieces/") + theme_str + "/wQ.svg"));
 	handles
 }
 

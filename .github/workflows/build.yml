@@ -4,9 +4,6 @@ on:
   push:
     branches: [ "main" ]
     paths-ignore: 'README.md'
-  pull_request:
-    branches: [ "main" ]
-    paths-ignore: 'README.md'
   workflow_dispatch:
 
 env:
@@ -23,19 +20,12 @@ jobs:
           sudo apt-get update
           sudo apt-get install libasound2-dev libgtk-3-dev libsqlite3-dev
       - uses: Swatinem/rust-cache@v2
-      - run: cargo build --release --verbose
+      - run: cargo rel --verbose
       - name: Prepare directory to upload as an artifact
         run: |
           mkdir zip
-          mkdir zip/offline-chess-puzzles
-          cp -R pieces zip/offline-chess-puzzles/
-          cp -R puzzles zip/offline-chess-puzzles/
-          cp -R translations zip/offline-chess-puzzles/
-          cp -R font zip/offline-chess-puzzles/
-          cp .env zip/offline-chess-puzzles/
-          cp ocp.db zip/offline-chess-puzzles/
-          cp *.ogg zip/offline-chess-puzzles/
-          cp settings.json zip/offline-chess-puzzles/
+          mkdir zip/offline-chess-puzzles/include
+          cp -R include/pieces zip/offline-chess-puzzles/include/
           cp LICENSE zip/offline-chess-puzzles/
           cp README.md zip/offline-chess-puzzles/
           cp target/x86_64-unknown-linux-gnu/release/offline-chess-puzzles zip/offline-chess-puzzles/
