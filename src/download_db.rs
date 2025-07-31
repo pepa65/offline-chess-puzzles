@@ -4,8 +4,7 @@ use iced::futures::sink::SinkExt;
 use iced::stream;
 use std::fs::File;
 use std::fs::OpenOptions;
-use std::io::Cursor;
-use std::io::{Seek, Write};
+use std::io::{Cursor, Seek, Write};
 use zstd;
 
 use crate::Message;

@@ -1,8 +1,9 @@
-use iced::overlay::menu;
-
-use iced::theme::Palette;
-use iced::widget::{button, container, pick_list};
-use iced::{Border, Color};
+use iced::{
+	Border, Color,
+	overlay::menu,
+	theme::Palette,
+	widget::{button, container, pick_list},
+};
 use iced_aw::style::tab_bar;
 
 macro_rules! rgb {

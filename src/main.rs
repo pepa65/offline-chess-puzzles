@@ -1,33 +1,28 @@
 #![windows_subsystem = "windows"]
 
+use chess::{ALL_SQUARES, Board, BoardStatus, ChessMove, Color, File, Game, Piece, Rank, Square};
+use dirs_next::home_dir;
 use eval::{Engine, EngineStatus};
-use iced::advanced::widget::Id as GenericId;
-use iced::color;
-use iced::event::{self, Event};
-use iced::widget::container::Id;
-use iced::widget::svg::Handle;
-use iced::widget::text::LineHeight;
-use iced::widget::{Button, Column, Container, Radio, Row, Svg, Text, button, center, container, responsive, row, text, text_input};
-use iced::window::{self, Screenshot};
-use iced::{Alignment, Length, Task, alignment};
-use iced::{Element, Rectangle, Size, Subscription, Theme};
+use iced::{Alignment, Element, Length, Rectangle, Size, Subscription, Task, Theme, alignment};
+use iced::{
+	advanced::widget::Id as GenericId,
+	color,
+	event::{self, Event},
+	widget::{
+		Button, Column, Container, Radio, Row, Svg, Text, button, center, container, container::Id, responsive, row, svg::Handle, text, text::LineHeight,
+		text_input,
+	},
+	window::{self, Screenshot},
+};
+use iced_aw::{TabLabel, Tabs};
 use image::RgbaImage;
-//use include_dir::{include_dir, Dir};
+use include_dir::{Dir, include_dir};
+use rand::seq::SliceRandom;
 use rfd::AsyncFileDialog;
-use std::borrow::Cow;
-use std::collections::HashMap;
-use std::io::Cursor;
-use std::path::Path;
-use std::str::FromStr;
+use rodio::{Decoder, OutputStream, OutputStreamBuilder, Sink};
+use std::{borrow::Cow, collections::HashMap, env, fs, io::Cursor, path::Path, str::FromStr};
 use styles::PieceTheme;
 use tokio::sync::mpsc::{self, Sender};
-
-use chess::{ALL_SQUARES, Board, BoardStatus, ChessMove, Color, File, Game, Piece, Rank, Square};
-use iced_aw::{TabLabel, Tabs};
-
-use rodio::{Decoder, OutputStream, OutputStreamBuilder, Sink};
-
-use rand::seq::SliceRandom;
 
 mod config;
 pub mod download_db;
@@ -65,7 +60,6 @@ const GREEN: iced::Color = color!(0x00ff00);
 const YELLOW: iced::Color = color!(0xffff00);
 const ONE_PIECE: &[u8] = include_bytes!("../include/1piece.ogg");
 const TWO_PIECES: &[u8] = include_bytes!("../include/2pieces.ogg");
-//const PIECES: Dir = include_dir!("include/pieces");
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
 pub struct PositionGUI {
@@ -170,20 +164,19 @@ impl SoundPlayback {
 fn get_image_handles(theme: &PieceTheme) -> Vec<Handle> {
 	let mut handles = Vec::<Handle>::with_capacity(12); // All different pieces & colors
 	let theme_str = &theme.to_string();
-	handles.insert(PieceWithColor::WhitePawn.index(), Handle::from_path(String::from("include/pieces/") + theme_str + "/wP.svg"));
-	//handles.insert(PieceWithColor::WhitePawn.index(), PIECES.get_file(theme_str + "/wP.svg"));
-	handles.insert(PieceWithColor::WhiteRook.index(), Handle::from_path(String::from("include/pieces/") + theme_str + "/wR.svg"));
-	handles.insert(PieceWithColor::WhiteKnight.index(), Handle::from_path(String::from("include/pieces/") + theme_str + "/wN.svg"));
-	handles.insert(PieceWithColor::WhiteBishop.index(), Handle::from_path(String::from("include/pieces/") + theme_str + "/wB.svg"));
-	handles.insert(PieceWithColor::WhiteQueen.index(), Handle::from_path(String::from("include/pieces/") + theme_str + "/wQ.svg"));
-	handles.insert(PieceWithColor::WhiteKing.index(), Handle::from_path(String::from("include/pieces/") + theme_str + "/wK.svg"));
+	handles.insert(PieceWithColor::WhitePawn.index(), Handle::from_path(String::from("pieces/") + theme_str + "/wP.svg"));
+	handles.insert(PieceWithColor::WhiteRook.index(), Handle::from_path(String::from("pieces/") + theme_str + "/wR.svg"));
+	handles.insert(PieceWithColor::WhiteKnight.index(), Handle::from_path(String::from("pieces/") + theme_str + "/wN.svg"));
+	handles.insert(PieceWithColor::WhiteBishop.index(), Handle::from_path(String::from("pieces/") + theme_str + "/wB.svg"));
+	handles.insert(PieceWithColor::WhiteQueen.index(), Handle::from_path(String::from("pieces/") + theme_str + "/wQ.svg"));
+	handles.insert(PieceWithColor::WhiteKing.index(), Handle::from_path(String::from("pieces/") + theme_str + "/wK.svg"));
 
-	handles.insert(PieceWithColor::BlackPawn.index(), Handle::from_path(String::from("include/pieces/") + theme_str + "/bP.svg"));
-	handles.insert(PieceWithColor::BlackRook.index(), Handle::from_path(String::from("include/pieces/") + theme_str + "/bR.svg"));
-	handles.insert(PieceWithColor::BlackKnight.index(), Handle::from_path(String::from("include/pieces/") + theme_str + "/bN.svg"));
-	handles.insert(PieceWithColor::BlackBishop.index(), Handle::from_path(String::from("include/pieces/") + theme_str + "/bB.svg"));
-	handles.insert(PieceWithColor::BlackQueen.index(), Handle::from_path(String::from("include/pieces/") + theme_str + "/bQ.svg"));
-	handles.insert(PieceWithColor::BlackKing.index(), Handle::from_path(String::from("include/pieces/") + theme_str + "/bK.svg"));
+	handles.insert(PieceWithColor::BlackPawn.index(), Handle::from_path(String::from("pieces/") + theme_str + "/bP.svg"));
+	handles.insert(PieceWithColor::BlackRook.index(), Handle::from_path(String::from("pieces/") + theme_str + "/bR.svg"));
+	handles.insert(PieceWithColor::BlackKnight.index(), Handle::from_path(String::from("pieces/") + theme_str + "/bN.svg"));
+	handles.insert(PieceWithColor::BlackBishop.index(), Handle::from_path(String::from("pieces/") + theme_str + "/bB.svg"));
+	handles.insert(PieceWithColor::BlackQueen.index(), Handle::from_path(String::from("pieces/") + theme_str + "/bQ.svg"));
+	handles.insert(PieceWithColor::BlackKing.index(), Handle::from_path(String::from("pieces/") + theme_str + "/bK.svg"));
 
 	handles
 }
@@ -235,7 +228,7 @@ fn get_notation_string(board: Board, promo_piece: Piece, from: Square, to: Squar
 //#[derive(Clone)]
 struct OfflinePuzzles {
 	pub window_id: Option<iced::window::Id>,
-	has_db: bool,
+	has_lichess_db: bool,
 	from_square: Option<Square>,
 	board: Board,
 	last_move_from: Option<Square>,
@@ -277,7 +270,7 @@ impl OfflinePuzzles {
 	pub fn new(has_lichess_db: bool) -> Self {
 		Self {
 			window_id: None,
-			has_db: has_lichess_db,
+			has_lichess_db,
 			from_square: None,
 			board: Board::default(),
 			last_move_from: None,
@@ -793,7 +786,7 @@ impl OfflinePuzzles {
 			}
 			(_, Message::DBDownloadFinished) => {
 				self.downloading_db = false;
-				self.has_db = true;
+				self.has_lichess_db = true;
 				Task::none()
 			}
 			(_, Message::DownloadProgress(progress)) => {
@@ -865,7 +858,7 @@ impl OfflinePuzzles {
 	}
 
 	fn view(&self) -> Element<Message, Theme, iced::Renderer> {
-		if self.has_db {
+		if self.has_lichess_db {
 			let has_previous = !self.puzzle_tab.puzzles.is_empty() && self.puzzle_tab.current_puzzle > 0;
 			let has_more_puzzles = !self.puzzle_tab.puzzles.is_empty() && self.puzzle_tab.current_puzzle < self.puzzle_tab.puzzles.len() - 1;
 			let is_fav = if self.puzzle_tab.puzzles.is_empty() {
@@ -1266,6 +1259,17 @@ trait Tab {
 }
 
 fn main() -> iced::Result {
+	let mut def_home = home_dir().unwrap();
+	def_home.push(".offline-chess-puzzles");
+	let ocp_home = env::var("OCP_HOME").unwrap_or(def_home.display().to_string());
+	if let Err(e) = fs::create_dir_all(&ocp_home) {
+		eprintln!("{}: can't create directory {}", e, ocp_home);
+	}
+	_ = env::set_current_dir(&ocp_home);
+
+	const PIECES: Dir = include_dir!("include/pieces");
+	let _ = PIECES.extract("pieces");
+
 	let window_settings = iced::window::Settings {
 		size: Size { width: config::SETTINGS.window_width, height: config::SETTINGS.window_height },
 		resizable: true,

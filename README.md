@@ -5,7 +5,7 @@
 [![license](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/pepa65/offline-chess-puzzles/blob/main/LICENSE)
 [![downloads](https://img.shields.io/crates/d/offline-chess-puzzles.svg)](https://crates.io/crates/offline-chess-puzzles)
 
-# offline-chess-puzzles 2.6.1
+# offline-chess-puzzles 2.7.1
 **View and solve puzzles from the lichess puzzle database**
 
 <img src="https://github.com/pepa65/offline-chess-puzzles/blob/main/demo.gif">
@@ -14,18 +14,21 @@ A big thank you to lichess for creating the [puzzle database](https://database.l
 
 * Cloned from https://github.com/brianch/offline-chess-puzzles: tweaked the clarity of messages and added Dutch translation.
 * To build the binary on Linux with Rust cargo, these packages are required: `libasound2-dev` `libgtk-3-dev` `libsqlite3-dev`
-* The binary needs the correct version of: `libasound2t64` `libssl3t64` `libssl3t64` `libsqlite3-0` `libgcc-s1` `libc6`
+* The binary needs the fitting version of libraries: `libasound2t64` `libssl3t64` `libssl3t64` `libsqlite3-0` `libgcc-s1` `libc6`
 
 ## Usage
-Download the app in the [Releases page](https://github.com/pepa65/offline-chess-puzzles/releases).
-
-You'll also need to download the file `lichess_db_puzzle.csv` (from the lichess link above), this can be done within the app.
-
-To play you simply search positions according to your needs, click `Search` and a puzzle will be loaded.
-
-If the move is a promotion you need to first select the piece to promote to (in the search tab), before making the pawn move.
-
-The search is a bit slow (especially when searching by opening, because it often needs to traverse the whole database) but I think it's important to use the csv directly so users can easily replace the file if needed.
+* Download the app in the [Releases page](https://github.com/pepa65/offline-chess-puzzles/releases).
+* The necessary file `lichess_db_puzzle.csv` (from the lichess link above), will be downloaded by the app if it is not found.
+  By default it will be saved to the app's storage directory, but its location can be changed in the `settings.json` file that will be created in the storage directory (see below), or a symlink could be placed in the storage directory. (It is good to get the csv file directly so it's fresh, and can easily be replaced if needed.)
+* To play you simply search positions according to your needs, click `Search` and a puzzle will be loaded.
+  - The initial search is somewhat slow (especially when searching by opening: it's a plaintext database).
+  - For a promotion move, first select the piece to promote to (in the Search tab), before making the pawn move.
+* The binary has all resources built in: font, translations, sound files, and pieces.
+* The storage directory that will be used can be specified with the environment variable `OCP_HOME`.
+  If not given, it will create and use the directory `.offline_chess_puzzles` in the user's home directory.
+  - All the included sets of pieces will be extracted to this storage directory in the subdirectory `pieces`.
+  - A settings file `settings.json` will be written to the storage directory.
+  - If favorite positions are selected, they will be stored in the sqlite3 database `favorites.db` in this storage directory.
 
 ## Possible use cases
 * Practice offline, it has filters by puzzle rating, theme and opening.

@@ -1,15 +1,13 @@
-use iced::Subscription;
-use iced::futures::Stream;
-use iced::futures::sink::SinkExt;
-use iced::stream;
+use iced::{Subscription, futures::Stream, futures::sink::SinkExt, stream};
 
 use std::process::Stdio;
-use tokio::io::{AsyncBufReadExt, AsyncWriteExt, BufReader};
-use tokio::process::{Child, Command};
-use tokio::sync::mpsc::{self, Receiver};
-
 use std::time::Duration;
-use tokio::time::timeout;
+use tokio::{
+	io::{AsyncBufReadExt, AsyncWriteExt, BufReader},
+	process::{Child, Command},
+	sync::mpsc::{self, Receiver},
+	time::timeout,
+};
 
 use crate::Message;
 

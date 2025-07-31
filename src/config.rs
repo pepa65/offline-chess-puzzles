@@ -1,3 +1,9 @@
+use chess::{Board, ChessMove, Piece, Square};
+use diesel::prelude::*;
+use iced::Font;
+use once_cell::sync::Lazy;
+use std::str::FromStr;
+
 use crate::{
 	lang,
 	openings::{Openings, Variation},
@@ -5,12 +11,6 @@ use crate::{
 	search_tab::TacticalThemes,
 	styles,
 };
-use chess::{Board, ChessMove, Piece, Square};
-use iced::Font;
-use once_cell::sync::Lazy;
-use std::str::FromStr;
-
-use diesel::prelude::*;
 
 pub static SETTINGS: Lazy<OfflinePuzzlesConfig> = Lazy::new(load_config);
 
@@ -52,12 +52,12 @@ pub struct OfflinePuzzlesConfig {
 impl ::std::default::Default for OfflinePuzzlesConfig {
 	fn default() -> Self {
 		Self {
-			engine_path: None,
+			engine_path: Some(String::from("/usr/games/stockfish")),
 			engine_limit: String::from("depth 40"),
 			window_width: 1297.,
 			window_height: 1025.,
 			maximized: false,
-			puzzle_db_location: String::from("lichess_db_puzzle.csv"),
+			puzzle_db_location: std::env::current_dir().unwrap().display().to_string(),
 			piece_theme: styles::PieceTheme::Alpha,
 			search_results_limit: 200000,
 			play_sound: true,

@@ -1,19 +1,22 @@
 use diesel::prelude::*;
 use diesel::sqlite::SqliteConnection;
-use dotenvy::dotenv;
+use dirs_next::home_dir;
 use std::env;
 
-use crate::config::Puzzle;
-use crate::models::NewFavorite;
-use crate::openings::{Openings, Variation};
-use crate::schema::favs;
-use crate::schema::favs::dsl::*;
-use crate::search_tab::{OpeningSide, TacticalThemes};
+use crate::{
+	config::Puzzle,
+	models::NewFavorite,
+	openings::{Openings, Variation},
+	schema::favs,
+	schema::favs::dsl::*,
+	search_tab::{OpeningSide, TacticalThemes},
+};
 
 pub fn establish_connection() -> SqliteConnection {
-	dotenv().ok();
-	let database_url = env::var("DATABASE_URL").unwrap_or("offline-chess-puzzles-favorites.db".to_string());
-	let mut conn = SqliteConnection::establish(&database_url).unwrap_or_else(|_| panic!("Error connecting to {}", database_url));
+	let home = home_dir().unwrap().display().to_string();
+	let ocp_home = env::var("OCP_HOME").unwrap_or(home + "/.offline-chess-puzzles");
+	let ocp_favorites = ocp_home + "/favorites.db";
+	let mut conn = SqliteConnection::establish(&ocp_favorites).unwrap_or_else(|_| panic!("Error connecting to {}", ocp_favorites));
 	let init = concat!(
 		"CREATE TABLE IF NOT EXISTS favs (",
 		"puzzle_id TEXT NOT NULL PRIMARY KEY,",
@@ -31,7 +34,7 @@ pub fn establish_connection() -> SqliteConnection {
 		"COMMIT;"
 	);
 	if let Err(err) = diesel::sql_query(init.to_string()).execute(&mut conn) {
-		panic!("{:?}: can't initialize {}", err, database_url);
+		panic!("{:?}: can't initialize {}", err, ocp_favorites);
 	}
 	conn
 }

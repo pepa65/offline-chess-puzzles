@@ -1,5 +1,6 @@
-use crate::schema::favs;
 use diesel::prelude::*;
+
+use crate::schema::favs;
 
 #[derive(Insertable)]
 #[diesel(table_name = favs)]

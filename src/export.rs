@@ -1,7 +1,9 @@
 use chess::{Board, ChessMove, Color, Piece, Square};
-use lopdf::content::{Content, Operation};
-use lopdf::dictionary;
-use lopdf::{Document, Object, Stream};
+use lopdf::{
+	Document, Object, Stream,
+	content::{Content, Operation},
+	dictionary,
+};
 use std::collections::VecDeque;
 use std::str::FromStr;
 

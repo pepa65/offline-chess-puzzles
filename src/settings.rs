@@ -1,8 +1,6 @@
 use iced::widget::{Button, Checkbox, Column, Container, PickList, Scrollable, Text, TextInput, column, row};
 use iced::{Alignment, Element, Length, Task, Theme, alignment};
-
 use iced_aw::TabLabel;
-
 use rfd::AsyncFileDialog;
 
 use crate::{Message, Tab, config, lang, lang::PickListWrapper, styles};
@@ -266,10 +264,10 @@ impl SettingsTab {
 		match file {
 			Ok(file) => {
 				if serde_json::to_writer_pretty(file, &config).is_err() {
-					println!("Error saving config file.");
+					eprintln!("Error saving config file.");
 				}
 			}
-			Err(_) => println!("Error opening settings file"),
+			Err(_) => eprintln!("Error opening settings file"),
 		}
 	}
 
