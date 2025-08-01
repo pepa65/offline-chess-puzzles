@@ -57,7 +57,7 @@ impl ::std::default::Default for OfflinePuzzlesConfig {
 			window_width: 1297.,
 			window_height: 1025.,
 			maximized: false,
-			puzzle_db_location: std::env::current_dir().unwrap().display().to_string(),
+			puzzle_db_location: String::from("lichess_db_puzzle.csv"),
 			piece_theme: styles::PieceTheme::Alpha,
 			search_results_limit: 200000,
 			play_sound: true,
