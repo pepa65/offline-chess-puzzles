@@ -26,10 +26,6 @@ pub fn to_pdf(puzzles: &[config::Puzzle], number_of_pages: i32, lang: &lang::Lan
 		"Type" => "FontDescriptor",
 		"FontName" => "Chess Alpha",
 		"FontFile2" => font_stream_id,
-		//"FontWeight" => "Medium",
-		//"Ascent" => 0,
-		//"Descent" => 0,
-		//"StemV" => 100,
 		"FontBBox" => vec![0.into(),0.into(), 1024.into(), 1024.into()],
 		"Flags" => 33,
 	};
@@ -89,7 +85,6 @@ pub fn to_pdf(puzzles: &[config::Puzzle], number_of_pages: i32, lang: &lang::Lan
 		num_of_pages = number_of_pages as usize;
 	};
 
-	//let number_of_pages: i64 = 100;//(puzzles.len() / 6).try_into().unwrap();
 	let mut page_ids = vec![];
 	let mut puzzle_index = 0;
 	for _ in 0..num_of_pages {

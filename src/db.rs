@@ -1,7 +1,5 @@
 use diesel::prelude::*;
 use diesel::sqlite::SqliteConnection;
-use dirs_next::home_dir;
-use std::env;
 
 use crate::{
 	config::Puzzle,
@@ -13,10 +11,8 @@ use crate::{
 };
 
 pub fn establish_connection() -> SqliteConnection {
-	let home = home_dir().unwrap().display().to_string();
-	let ocp_home = env::var("OCP_HOME").unwrap_or(home + "/.offline-chess-puzzles");
-	let ocp_favorites = ocp_home + "/favorites.db";
-	let mut conn = SqliteConnection::establish(&ocp_favorites).unwrap_or_else(|_| panic!("Error connecting to {}", ocp_favorites));
+	let fav_db = "favorites.db";
+	let mut conn = SqliteConnection::establish(fav_db).unwrap_or_else(|_| panic!("Error connecting to {}", &fav_db));
 	let init = concat!(
 		"CREATE TABLE IF NOT EXISTS favs (",
 		"puzzle_id TEXT NOT NULL PRIMARY KEY,",
@@ -34,7 +30,7 @@ pub fn establish_connection() -> SqliteConnection {
 		"COMMIT;"
 	);
 	if let Err(err) = diesel::sql_query(init.to_string()).execute(&mut conn) {
-		panic!("{:?}: can't initialize {}", err, ocp_favorites);
+		panic!("{:?}: can't initialize {}", err, &fav_db);
 	}
 	conn
 }

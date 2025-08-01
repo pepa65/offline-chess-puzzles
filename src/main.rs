@@ -60,6 +60,7 @@ const GREEN: iced::Color = color!(0x00ff00);
 const YELLOW: iced::Color = color!(0xffff00);
 const ONE_PIECE: &[u8] = include_bytes!("../include/1piece.ogg");
 const TWO_PIECES: &[u8] = include_bytes!("../include/2pieces.ogg");
+pub const PIECES: Dir = include_dir!("include/pieces");
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
 pub struct PositionGUI {
@@ -164,20 +165,11 @@ impl SoundPlayback {
 fn get_image_handles(theme: &PieceTheme) -> Vec<Handle> {
 	let mut handles = Vec::<Handle>::with_capacity(12); // All different pieces & colors
 	let theme_str = &theme.to_string();
-	handles.insert(PieceWithColor::WhitePawn.index(), Handle::from_path(String::from("pieces/") + theme_str + "/wP.svg"));
-	handles.insert(PieceWithColor::WhiteRook.index(), Handle::from_path(String::from("pieces/") + theme_str + "/wR.svg"));
-	handles.insert(PieceWithColor::WhiteKnight.index(), Handle::from_path(String::from("pieces/") + theme_str + "/wN.svg"));
-	handles.insert(PieceWithColor::WhiteBishop.index(), Handle::from_path(String::from("pieces/") + theme_str + "/wB.svg"));
-	handles.insert(PieceWithColor::WhiteQueen.index(), Handle::from_path(String::from("pieces/") + theme_str + "/wQ.svg"));
-	handles.insert(PieceWithColor::WhiteKing.index(), Handle::from_path(String::from("pieces/") + theme_str + "/wK.svg"));
-
-	handles.insert(PieceWithColor::BlackPawn.index(), Handle::from_path(String::from("pieces/") + theme_str + "/bP.svg"));
-	handles.insert(PieceWithColor::BlackRook.index(), Handle::from_path(String::from("pieces/") + theme_str + "/bR.svg"));
-	handles.insert(PieceWithColor::BlackKnight.index(), Handle::from_path(String::from("pieces/") + theme_str + "/bN.svg"));
-	handles.insert(PieceWithColor::BlackBishop.index(), Handle::from_path(String::from("pieces/") + theme_str + "/bB.svg"));
-	handles.insert(PieceWithColor::BlackQueen.index(), Handle::from_path(String::from("pieces/") + theme_str + "/bQ.svg"));
-	handles.insert(PieceWithColor::BlackKing.index(), Handle::from_path(String::from("pieces/") + theme_str + "/bK.svg"));
-
+	let svgs = ["wP.svg", "wR.svg", "wN.svg", "wB.svg", "wQ.svg", "wK.svg", "bP.svg", "bR.svg", "bN.svg", "bB.svg", "bQ.svg", "bK.svg"];
+	for (i, svg) in svgs.iter().enumerate() {
+		let f = PIECES.get_file(theme_str.to_owned() + "/" + svg).unwrap();
+		handles.insert(i, Handle::from_memory(f.contents()));
+  }
 	handles
 }
 
@@ -849,7 +841,6 @@ impl OfflinePuzzles {
 			}
 			_ => {
 				Subscription::batch(vec![
-					//Engine::run_engine(&self.engine.clone()),
 					self.engine.run_engine(),
 					event::listen().map(Message::EventOccurred),
 				])
@@ -1266,9 +1257,6 @@ fn main() -> iced::Result {
 		eprintln!("{}: can't create directory {}", e, ocp_home);
 	}
 	_ = env::set_current_dir(&ocp_home);
-
-	const PIECES: Dir = include_dir!("include/pieces");
-	let _ = PIECES.extract("pieces");
 
 	let window_settings = iced::window::Settings {
 		size: Size { width: config::SETTINGS.window_width, height: config::SETTINGS.window_height },

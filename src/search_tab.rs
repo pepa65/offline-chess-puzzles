@@ -9,6 +9,7 @@ use crate::{
 	config::load_config,
 	lang::{DisplayTranslated, PickListWrapper},
 	openings::{Openings, Variation},
+	PIECES,
 	styles::PieceTheme,
 };
 
@@ -277,14 +278,13 @@ pub enum SearchBase {
 }
 
 pub fn gen_piece_vec(theme: &PieceTheme) -> Vec<Handle> {
-	let mut handles = Vec::<Handle>::with_capacity(5); // Number of promotion pieces
+	let mut handles = Vec::<Handle>::with_capacity(5); // Number of promotion pieces + pawn
 	let theme_str = &theme.to_string();
-	// this first entry won't be used, it's there just to fill the vec, so we can index by the Piece
-	handles.insert(Piece::Pawn.to_index(), Handle::from_path(String::from("pieces/") + theme_str + "/wP.svg"));
-	handles.insert(Piece::Knight.to_index(), Handle::from_path(String::from("pieces/") + theme_str + "/wN.svg"));
-	handles.insert(Piece::Bishop.to_index(), Handle::from_path(String::from("pieces/") + theme_str + "/wB.svg"));
-	handles.insert(Piece::Rook.to_index(), Handle::from_path(String::from("pieces/") + theme_str + "/wR.svg"));
-	handles.insert(Piece::Queen.to_index(), Handle::from_path(String::from("pieces/") + theme_str + "/wQ.svg"));
+	let svgs = ["wP.svg", "wN.svg", "wB.svg", "wR.svg", "wQ.svg"];
+	for (i, svg) in svgs.iter().enumerate() {
+		let f = PIECES.get_file(theme_str.to_owned() + "/" + svg).unwrap();
+		handles.insert(i, Handle::from_memory(f.contents()));
+	}
 	handles
 }
 
