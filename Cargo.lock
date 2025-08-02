@@ -3426,7 +3426,7 @@ dependencies = [
 
 [[package]]
 name = "offline-chess-puzzles"
-version = "2.8.1"
+version = "2.8.3"
 dependencies = [
  "chess",
  "csv",

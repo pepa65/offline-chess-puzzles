@@ -6,10 +6,10 @@ use std::io::BufReader;
 
 use crate::{Message, Tab, config, db, lang, styles};
 use crate::{
+	PIECES,
 	config::load_config,
 	lang::{DisplayTranslated, PickListWrapper},
 	openings::{Openings, Variation},
-	PIECES,
 	styles::PieceTheme,
 };
 

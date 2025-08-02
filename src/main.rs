@@ -169,7 +169,7 @@ fn get_image_handles(theme: &PieceTheme) -> Vec<Handle> {
 	for (i, svg) in svgs.iter().enumerate() {
 		let f = PIECES.get_file(theme_str.to_owned() + "/" + svg).unwrap();
 		handles.insert(i, Handle::from_memory(f.contents()));
-  }
+	}
 	handles
 }
 
@@ -839,12 +839,7 @@ impl OfflinePuzzles {
 					event::listen().map(Message::EventOccurred)
 				}
 			}
-			_ => {
-				Subscription::batch(vec![
-					self.engine.run_engine(),
-					event::listen().map(Message::EventOccurred),
-				])
-			}
+			_ => Subscription::batch(vec![self.engine.run_engine(), event::listen().map(Message::EventOccurred)]),
 		}
 	}
 
@@ -947,9 +942,9 @@ fn gen_view<'a>(
 
 	// Reserve more space below the board if we'll show the engine eval
 	let board_height = if engine_eval.is_empty() {
-		if show_coordinates { ((size.height - 145. - 12.) / 8.) as u16 } else { ((size.height - 135. - 12.) / 8.) as u16 }
+		if show_coordinates { ((size.height - 165. - 12.) / 8.) as u16 } else { ((size.height - 135. - 12.) / 8.) as u16 }
 	} else if show_coordinates {
-		((size.height - 175. - 12.) / 8.) as u16
+		((size.height - 195. - 12.) / 8.) as u16
 	} else {
 		((size.height - 165. - 12.) / 8.) as u16
 	};
@@ -1095,8 +1090,8 @@ fn gen_view<'a>(
 
 		if show_coordinates {
 			board_row = board_row.push(
-				Container::new(Text::new((rank + 1).to_string()).size(15))
-					.align_y(iced::alignment::Vertical::Bottom)
+				Container::new(Text::new((rank + 1).to_string()).size(25))
+					.align_y(iced::alignment::Vertical::Center)
 					.align_x(iced::alignment::Horizontal::Right)
 					.padding(3)
 					.height(board_height),
@@ -1108,25 +1103,25 @@ fn gen_view<'a>(
 	if show_coordinates {
 		if is_white {
 			board_col = board_col.push(row![
-				Text::new("a").size(15).width(board_height),
-				Text::new("b").size(15).width(board_height),
-				Text::new("c").size(15).width(board_height),
-				Text::new("d").size(15).width(board_height),
-				Text::new("e").size(15).width(board_height),
-				Text::new("f").size(15).width(board_height),
-				Text::new("g").size(15).width(board_height),
-				Text::new("h").size(15).width(board_height),
+				Text::new("     a").size(25).width(board_height),
+				Text::new("     b").size(25).width(board_height),
+				Text::new("     c").size(25).width(board_height),
+				Text::new("     d").size(25).width(board_height),
+				Text::new("     e").size(25).width(board_height),
+				Text::new("     f").size(25).width(board_height),
+				Text::new("     g").size(25).width(board_height),
+				Text::new("     h").size(25).width(board_height),
 			]);
 		} else {
 			board_col = board_col.push(row![
-				Text::new("h").size(15).width(board_height),
-				Text::new("g").size(15).width(board_height),
-				Text::new("f").size(15).width(board_height),
-				Text::new("e").size(15).width(board_height),
-				Text::new("d").size(15).width(board_height),
-				Text::new("c").size(15).width(board_height),
-				Text::new("b").size(15).width(board_height),
-				Text::new("a").size(15).width(board_height),
+				Text::new("     h").size(25).width(board_height),
+				Text::new("     g").size(25).width(board_height),
+				Text::new("     f").size(25).width(board_height),
+				Text::new("     e").size(25).width(board_height),
+				Text::new("     d").size(25).width(board_height),
+				Text::new("     c").size(25).width(board_height),
+				Text::new("     b").size(25).width(board_height),
+				Text::new("     a").size(25).width(board_height),
 			]);
 		}
 	}

@@ -12,11 +12,11 @@ use crate::{PuzzleTab, config, lang};
 // This is basically all copy-pasted from the lopdf example, I left the comments
 // as they might be useful.
 pub fn to_pdf(puzzles: &[config::Puzzle], number_of_pages: i32, lang: &lang::Language, path: String) {
-	let font_data = std::fs::read("font/Alpha.ttf").unwrap();
+	let font_data = config::CHESS_ALPHA_BYTES;
 	// Load the font data from a file
 
 	// Create a stream object for the font data
-	let font_stream = Stream::new(dictionary! {}, font_data.clone());
+	let font_stream = Stream::new(dictionary! {}, font_data.to_vec());
 
 	// Create a document object and add the font and font descriptor to it
 	let mut doc = Document::with_version("1.7");
