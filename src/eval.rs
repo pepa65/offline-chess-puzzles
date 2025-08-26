@@ -172,15 +172,13 @@ fn engine_stream(engine: Engine) -> impl Stream<Item = Message> {
 											}
 										}
 										for i in (index + 3)..vector.len() {
-											if let Some(token) = vector.get(i) {
-												if token == &"pv" {
+											if let Some(token) = vector.get(i)
+												&& token == &"pv"
+												&& let Some(best) = vector.get(i + 1) {
 													// I thought we could just unwrap, but at least Koivisto sometimes
 													// returns lines with nothing in the pv
-													if let Some(best) = vector.get(i + 1) {
-														best_move = Some(best.to_string());
-														break;
-													}
-												}
+													best_move = Some(best.to_string());
+													break;
 											}
 										}
 									}

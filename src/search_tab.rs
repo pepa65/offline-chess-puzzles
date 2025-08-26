@@ -427,10 +427,8 @@ impl SearchTab {
 				config.last_opening_side = op_side;
 
 				let file = std::fs::File::create("settings.json");
-				if let Ok(file) = file {
-					if serde_json::to_writer_pretty(file, &config).is_err() {
-						eprintln!("Error saving search options.");
-					}
+				if let Ok(file) = file && serde_json::to_writer_pretty(file, &config).is_err() {
+					eprintln!("Error saving search options.");
 				}
 			}
 		}
@@ -464,15 +462,13 @@ impl SearchTab {
 				match side {
 					OpeningSide::Any => {
 						for result in reader.deserialize::<config::Puzzle>() {
-							if let Ok(record) = result {
-								if record.opening.contains(opening_tag)
-									&& record.rating >= min_rating
-									&& record.rating <= max_rating
-									&& record.popularity >= min_popularity
-									&& record.themes.contains(theme.get_tag_name())
-								{
-									puzzles.push(record);
-								}
+							if let Ok(record) = result
+								&& record.opening.contains(opening_tag)
+								&& record.rating >= min_rating
+								&& record.rating <= max_rating
+								&& record.popularity >= min_popularity
+								&& record.themes.contains(theme.get_tag_name()) {
+								puzzles.push(record);
 							}
 							if puzzles.len() == result_limit {
 								break;
@@ -481,16 +477,14 @@ impl SearchTab {
 					}
 					OpeningSide::Black => {
 						for result in reader.deserialize::<config::Puzzle>() {
-							if let Ok(record) = result {
-								if record.opening.contains(opening_tag)
-									&& !record.game_url.contains("black")
-									&& record.rating >= min_rating
-									&& record.rating <= max_rating
-									&& record.popularity >= min_popularity
-									&& record.themes.contains(theme.get_tag_name())
-								{
-									puzzles.push(record);
-								}
+							if let Ok(record) = result
+								&& record.opening.contains(opening_tag)
+								&& !record.game_url.contains("black")
+								&& record.rating >= min_rating
+								&& record.rating <= max_rating
+								&& record.popularity >= min_popularity
+								&& record.themes.contains(theme.get_tag_name()) {
+								puzzles.push(record);
 							}
 							if puzzles.len() == result_limit {
 								break;
@@ -499,16 +493,15 @@ impl SearchTab {
 					}
 					OpeningSide::White => {
 						for result in reader.deserialize::<config::Puzzle>() {
-							if let Ok(record) = result {
-								if record.opening.contains(opening_tag)
-									&& record.game_url.contains("black")
-									&& record.rating >= min_rating
-									&& record.rating <= max_rating
-									&& record.popularity >= min_popularity
-									&& record.themes.contains(theme.get_tag_name())
-								{
-									puzzles.push(record);
-								}
+							if let Ok(record) = result
+								&& record.opening.contains(opening_tag)
+								&& record.game_url.contains("black")
+								&& record.rating >= min_rating
+								&& record.rating <= max_rating
+								&& record.popularity >= min_popularity
+								&& record.themes.contains(theme.get_tag_name())
+							{
+								puzzles.push(record);
 							}
 							if puzzles.len() == result_limit {
 								break;
@@ -518,14 +511,13 @@ impl SearchTab {
 				}
 			} else {
 				for result in reader.deserialize::<config::Puzzle>() {
-					if let Ok(record) = result {
-						if record.rating >= min_rating
-							&& record.rating <= max_rating
-							&& record.popularity >= min_popularity
-							&& record.themes.contains(theme.get_tag_name())
-						{
-							puzzles.push(record);
-						}
+					if let Ok(record) = result
+						&& record.rating >= min_rating
+						&& record.rating <= max_rating
+						&& record.popularity >= min_popularity
+						&& record.themes.contains(theme.get_tag_name())
+					{
+						puzzles.push(record);
 					}
 					if puzzles.len() == result_limit {
 						break;
@@ -548,7 +540,7 @@ impl Tab for SearchTab {
 		TabLabel::Text(self.title())
 	}
 
-	fn content(&self) -> Element<Message> {
+	fn content(&self) -> Element<'_, Message> {
 		let mut search_col = col![
 			Container::new(
 				row![
