@@ -1681,9 +1681,9 @@ dependencies = [
 
 [[package]]
 name = "generic-array"
-version = "0.14.7"
+version = "0.14.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "85649ca51fd72272d7821adaf274ad91c288277713d9c18820d8499a7ff69e9a"
+checksum = "1dc8f7d2ded5f9209535e4b3fd4d39c002f30902ff5ce9f64e2c33d549576500"
 dependencies = [
  "typenum",
  "version_check",
@@ -2131,9 +2131,9 @@ dependencies = [
 
 [[package]]
 name = "iced_drop"
-version = "0.1.45"
+version = "0.1.46"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "95995638bacc0c2b2188b5a950ff1eb2d20a99009d717fa26deb7d8c142daa4d"
+checksum = "98e006ca6779842e77e12e4012de5dd6460a6a9b69d965846ebcc365fbeca7f8"
 dependencies = [
  "iced",
 ]
@@ -2912,9 +2912,9 @@ dependencies = [
 
 [[package]]
 name = "moxcms"
-version = "0.7.6"
+version = "0.7.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1cc7d85f3d741164e8972ad355e26ac6e51b20fcae5f911c7da8f2d8bbbb3f33"
+checksum = "c588e11a3082784af229e23e8e4ecf5bcc6fbe4f69101e0421ce8d79da7f0b40"
 dependencies = [
  "num-traits",
  "pxfm",
@@ -3449,7 +3449,7 @@ dependencies = [
 
 [[package]]
 name = "offline-chess-puzzles"
-version = "2.8.42"
+version = "2.8.43"
 dependencies = [
  "chess",
  "csv",
