@@ -2131,9 +2131,9 @@ dependencies = [
 
 [[package]]
 name = "iced_drop"
-version = "0.1.50"
+version = "0.1.51"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "98bad7715d2a024c238d85113cf1fd5e7b4b2d23e61195c4b29287a2d86c2b01"
+checksum = "c54da34546638085236ba6c44699473660c88feccd2c433ac04e9bb6eb1713d4"
 dependencies = [
  "iced",
 ]
@@ -3438,7 +3438,7 @@ dependencies = [
 
 [[package]]
 name = "offline-chess-puzzles"
-version = "2.8.48"
+version = "2.8.49"
 dependencies = [
  "chess",
  "csv",
@@ -5297,9 +5297,9 @@ checksum = "1df77b101bcc4ea3d78dafc5ad7e4f58ceffe0b2b16bf446aeb50b6cb4157656"
 
 [[package]]
 name = "unicode-ident"
-version = "1.0.19"
+version = "1.0.20"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f63a545481291138910575129486daeaf8ac54aee4387fe7906919f7830c7d9d"
+checksum = "462eeb75aeb73aea900253ce739c8e18a67423fadf006037cd3ff27e82748a06"
 
 [[package]]
 name = "unicode-linebreak"
