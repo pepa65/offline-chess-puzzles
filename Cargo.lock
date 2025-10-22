@@ -2131,9 +2131,9 @@ dependencies = [
 
 [[package]]
 name = "iced_drop"
-version = "0.1.51"
+version = "0.1.52"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c54da34546638085236ba6c44699473660c88feccd2c433ac04e9bb6eb1713d4"
+checksum = "f2ee1fde8bf18fcd68fc7531ec965771bed2e69b53876d6c2d5cb779087467dd"
 dependencies = [
  "iced",
 ]
@@ -2841,9 +2841,9 @@ checksum = "f52b00d39961fc5b2736ea853c9cc86238e165017a493d1d5c8eac6bdc4cc273"
 
 [[package]]
 name = "memmap2"
-version = "0.9.8"
+version = "0.9.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "843a98750cd611cc2965a8213b53b43e715f13c37a9e096c6408e69990961db7"
+checksum = "744133e4a0e0a658e1374cf3bf8e415c4052a15a111acd372764c55b4177d490"
 dependencies = [
  "libc",
 ]
@@ -3438,7 +3438,7 @@ dependencies = [
 
 [[package]]
 name = "offline-chess-puzzles"
-version = "2.8.49"
+version = "2.8.50"
 dependencies = [
  "chess",
  "csv",
