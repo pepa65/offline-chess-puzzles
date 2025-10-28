@@ -6,7 +6,7 @@
 [![downloads](https://img.shields.io/crates/d/offline-chess-puzzles.svg)](https://crates.io/crates/offline-chess-puzzles)
 
 # offline-chess-puzzles 2.8.52
-**View and solve puzzles from the lichess puzzle database**
+**GUI to solve puzzles from the lichess puzzle database**
 
 <img src="https://github.com/pepa65/offline-chess-puzzles/blob/main/demo.gif">
 
