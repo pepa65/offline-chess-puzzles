@@ -173,12 +173,12 @@ fn engine_stream(engine: Engine) -> impl Stream<Item = Message> {
 										}
 										for i in (index + 3)..vector.len() {
 											if let Some(token) = vector.get(i)
-												&& token == &"pv"
-												&& let Some(best) = vector.get(i + 1) {
-													// I thought we could just unwrap, but at least Koivisto sometimes
-													// returns lines with nothing in the pv
-													best_move = Some(best.to_string());
-													break;
+												&& token == &"pv" && let Some(best) = vector.get(i + 1)
+											{
+												// I thought we could just unwrap, but at least Koivisto sometimes
+												// returns lines with nothing in the pv
+												best_move = Some(best.to_string());
+												break;
 											}
 										}
 									}

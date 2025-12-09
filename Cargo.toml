@@ -38,10 +38,11 @@ unic-langid = { version = "0.9.5", features = ["macros"] }
 diesel = { version = "2.2.12", features = ["sqlite"] }
 lopdf = "0"
 open = "5.3.2"
-rfd = "0.15.2"
+rfd = "0.16"
 image = { version = "0.25.5", default-features = false, features = ["jpeg"] }
 include_dir = "0.7.4"
 dirs-next = "2.0.0"
+chrono = "0.4.42"
 
 [target.'cfg(windows)'.dependencies]
 libsqlite3-sys = { version = "0.35.0", features = ["bundled"] }

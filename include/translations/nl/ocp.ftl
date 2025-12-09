@@ -79,6 +79,7 @@ show_coords = Toon veldcodes:
 pdf_number_of_pages = Aantal PDF pagina's:
 get_first_puzzles1 = Haal de eerste
 get_first_puzzles2 =  {" "}puzzels
+export_pgn = Exporteer geselecteerde puzzels naar PGN
 engine_path = Bestandspad voor schaakprogramma (incl. ".exe"):
 save = Sla instellingen op
 settings_saved = Instellingen opgeslagen!
@@ -159,7 +160,7 @@ killBoxMate = Doosmat
 vukovicMate = Vukovic Mat
 smotheredMate = Stikmat
 
-castling = Rokkeren
+castling = Rokeren
 enPassant = En passant
 promotion = Promoveren
 underPromotion = Onderpromoveren

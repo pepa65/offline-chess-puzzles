@@ -427,7 +427,9 @@ impl SearchTab {
 				config.last_opening_side = op_side;
 
 				let file = std::fs::File::create("settings.json");
-				if let Ok(file) = file && serde_json::to_writer_pretty(file, &config).is_err() {
+				if let Ok(file) = file
+					&& serde_json::to_writer_pretty(file, &config).is_err()
+				{
 					eprintln!("Error saving search options.");
 				}
 			}
@@ -467,7 +469,8 @@ impl SearchTab {
 								&& record.rating >= min_rating
 								&& record.rating <= max_rating
 								&& record.popularity >= min_popularity
-								&& record.themes.contains(theme.get_tag_name()) {
+								&& record.themes.contains(theme.get_tag_name())
+							{
 								puzzles.push(record);
 							}
 							if puzzles.len() == result_limit {
@@ -483,7 +486,8 @@ impl SearchTab {
 								&& record.rating >= min_rating
 								&& record.rating <= max_rating
 								&& record.popularity >= min_popularity
-								&& record.themes.contains(theme.get_tag_name()) {
+								&& record.themes.contains(theme.get_tag_name())
+							{
 								puzzles.push(record);
 							}
 							if puzzles.len() == result_limit {

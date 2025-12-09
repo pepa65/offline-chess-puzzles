@@ -117,6 +117,7 @@ pub enum Message {
 	SaveScreenshot(Option<(Screenshot, String)>),
 	ExportPDF(Option<String>),
 	LoadPuzzle(Option<Vec<config::Puzzle>>),
+	ExportPGN(Option<String>),
 	ChangeSettings(Option<config::OfflinePuzzlesConfig>),
 	EventOccurred(iced::Event),
 	StartEngine,
@@ -188,7 +189,9 @@ fn gen_square_hashmap() -> HashMap<GenericId, Square> {
 fn san_correct_ep(fen: String) -> String {
 	let mut tokens_vec: Vec<&str> = fen.split_whitespace().collect::<Vec<&str>>();
 	let mut new_ep_square = String::from("-");
-	if let Some(en_passant) = tokens_vec.get(3) && en_passant != &"-" {
+	if let Some(en_passant) = tokens_vec.get(3)
+		&& en_passant != &"-"
+	{
 		let rank = if String::from(&en_passant[1..2]).parse::<usize>().unwrap() == 4 { 3 } else { 6 };
 		new_ep_square = String::from(&en_passant[0..1]) + &rank.to_string();
 	}
@@ -203,7 +206,9 @@ fn get_notation_string(board: Board, promo_piece: Piece, from: Square, to: Squar
 
 	// Check for promotion and adjust the notation accordingly
 	if let (Some(piece), Some(color)) = (piece, color)
-		&& piece == Piece::Pawn && ((color == Color::White && to.get_rank() == Rank::Eighth) || (color == Color::Black && to.get_rank() == Rank::First)) {
+		&& piece == Piece::Pawn
+		&& ((color == Color::White && to.get_rank() == Rank::Eighth) || (color == Color::Black && to.get_rank() == Rank::First))
+	{
 		match promo_piece {
 			Piece::Rook => move_made_notation += "r",
 			Piece::Knight => move_made_notation += "n",
@@ -327,11 +332,13 @@ impl OfflinePuzzles {
 				self.analysis_history.push(self.analysis.current_position());
 				self.engine.position = self.analysis.current_position().to_string();
 				if let Some(sender) = &self.engine_sender
-					&& let Err(e) = sender.blocking_send(san_correct_ep(self.analysis.current_position().to_string())) {
+					&& let Err(e) = sender.blocking_send(san_correct_ep(self.analysis.current_position().to_string()))
+				{
 					eprintln!("Lost contact with the engine: {}", e);
 				}
 				if self.settings_tab.saved_configs.play_sound
-					&& let Some(audio) = &self.sound_playback {
+					&& let Some(audio) = &self.sound_playback
+				{
 					audio.play_one();
 				}
 			}
@@ -363,7 +370,8 @@ impl OfflinePuzzles {
 
 				if self.puzzle_tab.current_puzzle_move == correct_moves.len() {
 					if self.settings_tab.saved_configs.play_sound
-						&& let Some(audio) = &self.sound_playback {
+						&& let Some(audio) = &self.sound_playback
+					{
 						audio.play_one();
 					}
 					if self.puzzle_tab.current_puzzle < self.puzzle_tab.puzzles.len() - 1 {
@@ -392,7 +400,8 @@ impl OfflinePuzzles {
 					}
 				} else {
 					if self.settings_tab.saved_configs.play_sound
-						&& let Some(audio) = &self.sound_playback {
+						&& let Some(audio) = &self.sound_playback
+					{
 						audio.play_two();
 					}
 					movement = ChessMove::new(
@@ -519,7 +528,8 @@ impl OfflinePuzzles {
 					self.analysis = Game::new_with_board(self.board);
 				} else {
 					if self.engine_state != EngineStatus::TurnedOff
-						&& let Some(sender) = &self.engine_sender {
+						&& let Some(sender) = &self.engine_sender
+					{
 						sender.blocking_send(String::from(eval::STOP_COMMAND)).expect("Error stopping engine.");
 					}
 					self.analysis_history.truncate(self.puzzle_tab.current_puzzle_move);
@@ -553,7 +563,8 @@ impl OfflinePuzzles {
 					self.analysis_history.pop();
 					self.analysis = Game::new_with_board(*self.analysis_history.last().unwrap());
 					if let Some(sender) = &self.engine_sender
-						&& let Err(e) = sender.blocking_send(san_correct_ep(self.analysis.current_position().to_string())) {
+						&& let Err(e) = sender.blocking_send(san_correct_ep(self.analysis.current_position().to_string()))
+					{
 						eprintln!("Lost contact with the engine: {}", e);
 					}
 				}
@@ -568,7 +579,8 @@ impl OfflinePuzzles {
 				self.search_tab.show_searching_msg = false;
 				self.game_mode = config::GameMode::Puzzle;
 				if self.engine_state != EngineStatus::TurnedOff
-					&& let Some(sender) = &self.engine_sender {
+					&& let Some(sender) = &self.engine_sender
+				{
 					sender.blocking_send(String::from(eval::STOP_COMMAND)).expect("Error stopping engine.");
 				}
 				if let Some(puzzles_vec) = puzzles_vec {
@@ -621,7 +633,9 @@ impl OfflinePuzzles {
 			(_, Message::JumpToPuzzle) => {
 				// Test if puzzle index typed is valid
 				let puzzle_index = self.puzzle_number_ui.parse::<usize>();
-				if let Ok(index) = puzzle_index && index > 0 && index <= self.puzzle_tab.puzzles.len() {
+				if let Ok(index) = puzzle_index
+					&& index > 0 && index <= self.puzzle_tab.puzzles.len()
+				{
 					// The user typed value starts on 1, not zero, so we subtract 1
 					self.puzzle_tab.current_puzzle = index - 1;
 				}
@@ -651,6 +665,12 @@ impl OfflinePuzzles {
 			(_, Message::ExportPDF(file_path)) => {
 				if let Some(file_path) = file_path {
 					export::to_pdf(&self.puzzle_tab.puzzles, self.settings_tab.export_pgs.parse::<i32>().unwrap(), &self.lang, file_path);
+				}
+				Task::none()
+			}
+			(_, Message::ExportPGN(file_path)) => {
+				if let Some(file_path) = file_path {
+					export::to_pgn(&self.puzzle_tab.puzzles, &self.lang, file_path);
 				}
 				Task::none()
 			}
@@ -752,7 +772,8 @@ impl OfflinePuzzles {
 							}
 						}
 						if let Some(best_move) = best_move
-							&& let Some(best_move) = config::coord_to_san(&self.analysis.current_position(), best_move, &self.lang) {
+							&& let Some(best_move) = config::coord_to_san(&self.analysis.current_position(), best_move, &self.lang)
+						{
 							self.engine_move = best_move;
 						}
 						Task::none()
