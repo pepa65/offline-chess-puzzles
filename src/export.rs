@@ -357,7 +357,7 @@ pub fn to_pgn(puzzles: &Vec<config::Puzzle>, lang: &lang::Language, path: String
 		// Add PGN headers
 		pgn_content.push_str(&format!("[Event \"Chess Puzzle\"]\n"));
 		pgn_content.push_str(&format!("[Site \"https://lichess.org/training/{}\"]\n", puzzle.puzzle_id));
-		pgn_content.push_str(&format!("[Date \"{}\"]\n", chrono::Local::now().format("%Y.%m.%d")));
+		pgn_content.push_str(&format!("[Date \"{}\"]\n", chrono::Local::now().format("%Y-%m-%d")));
 		pgn_content.push_str(&format!("[White \"{}\"]\n", if board.side_to_move() == Color::White { "Player" } else { "Opponent" }));
 		pgn_content.push_str(&format!("[Black \"{}\"]\n", if board.side_to_move() == Color::Black { "Player" } else { "Opponent" }));
 		pgn_content.push_str(&format!("[Result \"*\"]\n"));
