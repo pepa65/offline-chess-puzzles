@@ -1,5 +1,4 @@
 use chess::{Board, ChessMove, Color, Piece, Square};
-use chrono;
 use lopdf::{
 	Document, Object, Stream,
 	content::{Content, Operation},
@@ -349,9 +348,9 @@ fn gen_diagram_operations(index: usize, puzzle: &config::Puzzle, start_x: i32, s
 	ops
 }
 
-pub fn to_pgn(puzzles: &Vec<config::Puzzle>, lang: &lang::Language, path: String) {
+pub fn to_pgn(puzzles: &[config::Puzzle], lang: &lang::Language, path: String) {
 	let mut pgn_content = String::new();
-	for (_, puzzle) in puzzles.iter().enumerate() {
+	for puzzle in puzzles.iter() {
 		// Start with a board from the FEN
 		let mut board = Board::from_str(&puzzle.fen).unwrap();
 		// Add PGN headers
