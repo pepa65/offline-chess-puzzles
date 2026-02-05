@@ -5,7 +5,7 @@
 [![license](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/pepa65/offline-chess-puzzles/blob/main/LICENSE)
 [![downloads](https://img.shields.io/crates/d/offline-chess-puzzles.svg)](https://crates.io/crates/offline-chess-puzzles)
 
-# offline-chess-puzzles 2.9.14
+# offline-chess-puzzles 2.9.15
 **GUI to solve puzzles from the lichess puzzle database**
 
 <img src="https://github.com/pepa65/offline-chess-puzzles/blob/main/demo.gif">
