@@ -1,6 +1,6 @@
 [package]
 name = "OCP"
-version = "2.9.16"
+version = "2.10.0"
 edition = "2024"
 authors = ["brianch <brianch@users.noreply.github.com>", "github.com/pepa65"]
 description = "offline-chess-puzzles - GUI to solve puzzles from the lichess puzzle database"

@@ -5,7 +5,7 @@
 [![license](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/pepa65/OCP/blob/main/LICENSE)
 [![downloads](https://img.shields.io/crates/d/OCP.svg)](https://crates.io/crates/OCP)
 
-# OCP 2.9.16
+# OCP 2.10.0
 **offline-chess-puzzles - GUI to solve puzzles from the lichess puzzle database**
 
 <img src="https://github.com/pepa65/OCP/blob/main/demo.gif">
