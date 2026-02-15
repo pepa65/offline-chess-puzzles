@@ -1,10 +1,10 @@
 [package]
-name = "offline-chess-puzzles"
+name = "OCP"
 version = "2.9.16"
 edition = "2024"
 authors = ["brianch <brianch@users.noreply.github.com>", "github.com/pepa65"]
-description = "GUI to solve puzzles from the lichess puzzle database"
-repository = "https://github.com/pepa65/offline-chess-puzzles"
+description = "offline-chess-puzzles - GUI to solve puzzles from the lichess puzzle database"
+repository = "https://github.com/pepa65/OCP"
 readme = "README.md"
 license = "MIT"
 keywords = ["chess", "gui", "puzzle-game"]

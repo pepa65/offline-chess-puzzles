@@ -1,14 +1,16 @@
-[![version](https://img.shields.io/crates/v/offline-chess-puzzles.svg)](https://crates.io/crates/offline-chess-puzzles)
-[![build](https://github.com/pepa65/offline-chess-puzzles/actions/workflows/build.yml/badge.svg)](https://github.com/pepa65/offline-chess-puzzles/actions/workflows/build.yml)
-[![dependencies](https://deps.rs/repo/github/pepa65/offline-chess-puzzles/status.svg)](https://deps.rs/repo/github/pepa65/offline-chess-puzzles)
-[![docs](https://img.shields.io/badge/docs-offline--chess--puzzles-blue.svg)](https://docs.rs/crate/offline-chess-puzzles/latest)
-[![license](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/pepa65/offline-chess-puzzles/blob/main/LICENSE)
-[![downloads](https://img.shields.io/crates/d/offline-chess-puzzles.svg)](https://crates.io/crates/offline-chess-puzzles)
+[![version](https://img.shields.io/crates/v/OCP.svg)](https://crates.io/crates/OCP)
+[![build](https://github.com/pepa65/OCP/actions/workflows/build.yml/badge.svg)](https://github.com/pepa65/OCP/actions/workflows/build.yml)
+[![dependencies](https://deps.rs/repo/github/pepa65/OCP/status.svg)](https://deps.rs/repo/github/pepa65/OCP)
+[![docs](https://img.shields.io/badge/docs-offline--chess--puzzles-blue.svg)](https://docs.rs/crate/OCP/latest)
+[![license](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/pepa65/OCP/blob/main/LICENSE)
+[![downloads](https://img.shields.io/crates/d/OCP.svg)](https://crates.io/crates/OCP)
 
-# offline-chess-puzzles 2.9.16
-**GUI to solve puzzles from the lichess puzzle database**
+# OCP 2.9.16
+**offline-chess-puzzles - GUI to solve puzzles from the lichess puzzle database**
 
-<img src="https://github.com/pepa65/offline-chess-puzzles/blob/main/demo.gif">
+<img src="https://github.com/pepa65/OCP/blob/main/demo.gif">
+
+**This repo is moving towards being archived as the original repo is revived and has received a lot of improvements. The hope is that a standalone binary `offline-chess-puzzles` will become available, and it will be published on crates.io as well.**
 
 A big thank you to lichess for creating the [puzzle database](https://database.lichess.org/#puzzles), to the project [chess-engine](https://github.com/adam-mcdaniel/chess-engine/) which I used as a starting point for the GUI here, and to the awesome [Iced GUI library](https://github.com/iced-rs/iced) project in which the interface is made.
 
@@ -17,7 +19,7 @@ A big thank you to lichess for creating the [puzzle database](https://database.l
 * The binary needs the fitting version of libraries: `libasound2t64` `libssl3t64` `libssl3t64` `libsqlite3-0` `libgcc-s1` `libc6`
 
 ## Usage
-* Download the app in the [Releases page](https://github.com/pepa65/offline-chess-puzzles/releases).
+* Download the app in the [Releases page](https://github.com/pepa65/OCP/releases).
 * The necessary file `lichess_db_puzzle.csv` (from the lichess link above), will be downloaded by the app if it is not found.
   By default it will be saved to the app's storage directory, but the location of the lichess database file can be changed in the `settings.json` file that will be created in the storage directory (see below). Alternatively, a symlink could be placed in the storage directory.
   - It is good to get the csv file directly so it's fresh, and can easily be replaced if needed.
