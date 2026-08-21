@@ -11,50 +11,9 @@ use crate::{config, PuzzleTab, lang};
 // This is basically all copy-pasted from the lopdf example, I left the comments
 // as they might be useful.
 pub fn to_pdf(puzzles: &Vec<config::Puzzle>, number_of_pages: i32, lang: &lang::Language, path: String) {
-    let font_data = std::fs::read("font/Alpha.ttf").unwrap();
-    // Load the font data from a file
-
-    // Create a stream object for the font data
-    let font_stream = Stream::new(dictionary! {}, font_data.clone());
 
     // Create a document object and add the font and font descriptor to it
-    let mut doc = Document::with_version("1.7");
-    // Create a font descriptor dictionary object
-    let font_stream_id = doc.add_object(font_stream);
-    let font_descriptor_dict = dictionary! {
-        "Type" => "FontDescriptor",
-        "FontName" => "Chess Alpha",
-        "FontFile2" => font_stream_id,
-        //"FontWeight" => "Medium",
-        //"Ascent" => 0,
-        //"Descent" => 0,
-        //"StemV" => 100,
-        "FontBBox" => vec![0.into(),0.into(), 1024.into(), 1024.into()],
-        "Flags" => 33,
-    };
-    let font_descriptor_id = doc.add_object(font_descriptor_dict);
-
-    let encoding = dictionary! {
-        "Type" => "Encoding",
-        "BaseEncoding" => "WinAnsiEncoding",
-    };
-
-    // Create a font dictionary object
-    let font_dict = dictionary! {
-        "Type" => "Font",
-        "Subtype" => "TrueType",
-        "BaseFont" => "Chess Alpha",
-        "FirstChar" => 32,
-        "LastChar" => 255,
-        "Widths" => vec![1024.into();256],
-        "FontDescriptor" => font_descriptor_id,
-        "Encoding" => doc.add_object(encoding),
-        "Length1" => font_data.len() as i32
-    };
-
-    let font_id = doc.add_object(font_dict);
-    // pages is the root node of the page tree
-    let pages_id = doc.new_object_id();
+    let mut doc = Document::with_version("1.5");
 
     let regular_font_id = doc.add_object(dictionary! {
         // type of dictionary
@@ -65,15 +24,22 @@ pub fn to_pdf(puzzles: &Vec<config::Puzzle>, number_of_pages: i32, lang: &lang::
         // See PDF reference document for more details
         "BaseFont" => "Arial",
     });
-    // font dictionaries need to be added into resource dictionaries
-    // in order to be used.
-    // Resource dictionaries can contain more than just fonts,
-    // but normally just contains fonts
-    // Only one resource dictionary is allowed per page tree root
+  
+    // pages is the root node of the page tree
+    let pages_id = doc.new_object_id();
+    let font_name = "Chess Alpha".to_string();
+    let mut font_data = lopdf::FontData::new(config::CHESS_ALPHA_BYTES, font_name.clone());
+    font_data
+        .set_flags(33)
+        .set_font_bbox((0, 0, 1000, 1000))
+        .set_first_char(32)
+        .set_last_char(255)
+        .set_widths(vec![1000.into();223])
+        .set_encoding("WinAnsiEncoding".to_string());
+    let font_id = doc.add_font(font_data).unwrap();
     let resources_id = doc.add_object(dictionary! {
-        // fonts are actually triplely nested dictionaries. Fun!
         "Font" => dictionary! {
-            "Chess Alpha" => font_id,
+            font_name => font_id,
             "Regular" => regular_font_id,
         },
     });
@@ -133,6 +99,7 @@ pub fn to_pdf(puzzles: &Vec<config::Puzzle>, number_of_pages: i32, lang: &lang::
             "Type" => "Page",
             "Parent" => pages_id,
             "Contents" => content_id,
+            "Resources" => resources_id,
         }).into());
     }
 
