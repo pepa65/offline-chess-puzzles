@@ -24,7 +24,7 @@ use rfd::AsyncFileDialog;
 use iced_aw::{TabLabel, Tabs};
 use chess::{Board, BoardStatus, ChessMove, Color, File, Game, Piece, Rank, Square, ALL_SQUARES};
 
-use rodio::{OutputStream, OutputStreamBuilder};
+use rodio::{MixerDeviceSink, DeviceSinkBuilder};
 
 use rand::rng;
 use rand::seq::SliceRandom;
@@ -128,7 +128,7 @@ pub enum Message {
 }
 
 struct SoundPlayback {
-    handle: OutputStream,
+    handle: MixerDeviceSink,
 }
 
 impl SoundPlayback {
@@ -136,7 +136,7 @@ impl SoundPlayback {
     pub const TWO_PIECE_SOUND: u8 = 1;
     pub fn init_sound() -> Option<Self> {
         let mut sound_playback = None;
-        if let Ok(handle) = OutputStreamBuilder::open_default_stream() {
+        if let Ok(handle) = DeviceSinkBuilder::open_default_sink() {
             sound_playback = Some (
                 SoundPlayback {
                     handle: handle,

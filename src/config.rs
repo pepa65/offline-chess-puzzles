@@ -1,12 +1,12 @@
 use crate::{styles, search_tab::TacticalThemes, search_tab::OpeningSide, lang, openings::{Openings, Variation}};
-use once_cell::sync::Lazy;
 use chess::{Board, ChessMove, Piece, Square};
 use std::str::FromStr;
+use std::sync::LazyLock;
 use iced::Font;
 
 use diesel::prelude::*;
 
-pub static SETTINGS: Lazy<OfflinePuzzlesConfig> = Lazy::new(|| {
+pub static SETTINGS: LazyLock<OfflinePuzzlesConfig> = LazyLock::new(|| {
     load_config()
 });
 

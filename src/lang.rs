@@ -2,11 +2,11 @@ use fluent_bundle::FluentResource;
 use fluent_bundle::bundle::FluentBundle;
 use unic_langid::langid;
 use std::io::Read;
-use once_cell::sync::Lazy;
+use std::sync::LazyLock;
 
 use crate::config::TRANSLATIONS_DIRECTORY;
 
-static BUNDLE_ENUS: Lazy<FluentBundle<FluentResource, intl_memoizer::concurrent::IntlLangMemoizer>> = Lazy::new(|| {
+static BUNDLE_ENUS: LazyLock<FluentBundle<FluentResource, intl_memoizer::concurrent::IntlLangMemoizer>> = LazyLock::new(|| {
     let file = std::fs::File::open(TRANSLATIONS_DIRECTORY.to_owned() + "en-US/ocp.ftl").unwrap();
     let mut reader = std::io::BufReader::new(file);
     let mut source = String::new();
@@ -17,7 +17,7 @@ static BUNDLE_ENUS: Lazy<FluentBundle<FluentResource, intl_memoizer::concurrent:
     bundle
 });
 
-static BUNDLE_PTBR: Lazy<FluentBundle<FluentResource, intl_memoizer::concurrent::IntlLangMemoizer>> = Lazy::new(|| {
+static BUNDLE_PTBR: LazyLock<FluentBundle<FluentResource, intl_memoizer::concurrent::IntlLangMemoizer>> = LazyLock::new(|| {
     let file = std::fs::File::open(TRANSLATIONS_DIRECTORY.to_owned() + "pt-BR/ocp.ftl").unwrap();
     let mut reader = std::io::BufReader::new(file);
     let mut source = String::new();
@@ -28,7 +28,7 @@ static BUNDLE_PTBR: Lazy<FluentBundle<FluentResource, intl_memoizer::concurrent:
     bundle
 });
 
-static BUNDLE_ES: Lazy<FluentBundle<FluentResource, intl_memoizer::concurrent::IntlLangMemoizer>> = Lazy::new(|| {
+static BUNDLE_ES: LazyLock<FluentBundle<FluentResource, intl_memoizer::concurrent::IntlLangMemoizer>> = LazyLock::new(|| {
     let file = std::fs::File::open(TRANSLATIONS_DIRECTORY.to_owned() + "es/ocp.ftl").unwrap();
     let mut reader = std::io::BufReader::new(file);
     let mut source = String::new();
@@ -39,7 +39,7 @@ static BUNDLE_ES: Lazy<FluentBundle<FluentResource, intl_memoizer::concurrent::I
     bundle
 });
 
-static BUNDLE_FR: Lazy<FluentBundle<FluentResource, intl_memoizer::concurrent::IntlLangMemoizer>> = Lazy::new(|| {
+static BUNDLE_FR: LazyLock<FluentBundle<FluentResource, intl_memoizer::concurrent::IntlLangMemoizer>> = LazyLock::new(|| {
     let file = std::fs::File::open(TRANSLATIONS_DIRECTORY.to_owned() + "fr/ocp.ftl").unwrap();
     let mut reader = std::io::BufReader::new(file);
     let mut source = String::new();
@@ -50,7 +50,7 @@ static BUNDLE_FR: Lazy<FluentBundle<FluentResource, intl_memoizer::concurrent::I
     bundle
 });
 
-static BUNDLE_CN: Lazy<FluentBundle<FluentResource, intl_memoizer::concurrent::IntlLangMemoizer>> = Lazy::new(|| {
+static BUNDLE_CN: LazyLock<FluentBundle<FluentResource, intl_memoizer::concurrent::IntlLangMemoizer>> = LazyLock::new(|| {
     let file = std::fs::File::open(TRANSLATIONS_DIRECTORY.to_owned() + "cn/ocp.ftl").unwrap();
     let mut reader = std::io::BufReader::new(file);
     let mut source = String::new();
@@ -61,7 +61,7 @@ static BUNDLE_CN: Lazy<FluentBundle<FluentResource, intl_memoizer::concurrent::I
     bundle
 });
 
-static BUNDLE_NL: Lazy<FluentBundle<FluentResource, intl_memoizer::concurrent::IntlLangMemoizer>> = Lazy::new(|| {
+static BUNDLE_NL: LazyLock<FluentBundle<FluentResource, intl_memoizer::concurrent::IntlLangMemoizer>> = LazyLock::new(|| {
     let file = std::fs::File::open(TRANSLATIONS_DIRECTORY.to_owned() + "nl/ocp.ftl").unwrap();
     let mut reader = std::io::BufReader::new(file);
     let mut source = String::new();

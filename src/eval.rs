@@ -52,7 +52,7 @@ impl Engine {
         )
     }
     
-    fn engine_stream(engine: &Engine) -> impl Stream<Item = Message> {
+    fn engine_stream(engine: &Engine) -> impl Stream<Item = Message> + use<> {
         let engine = engine.clone();
         stream::channel(100,
 
