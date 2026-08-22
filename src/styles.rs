@@ -287,23 +287,17 @@ fn styled(
     border_color: Color,
     base: iced::theme::palette::Pair,
     icon_color: Color,
-    // I might need this later
+    // I'm not using those, but leaving it ready in case I need
     _accent: iced::theme::palette::Pair,
-    is_checked: bool,
+    _is_checked: bool,
 ) -> checkbox::Style {
-    let (background, border) = if is_checked {
-        (base, border_color)
-    } else {
-        (base, border_color)
-    };
-
     checkbox::Style {
-        background: iced::Background::Color(background.color),
+        background: iced::Background::Color(base.color),
         icon_color,
         border: Border {
             radius: 2.0.into(),
             width: 1.0,
-            color: border,
+            color: border_color,
         },
         text_color: None,
     }
@@ -505,15 +499,15 @@ pub struct OCPPalette {
     pub tab_label: Color,
 }
 
-impl Into<Palette> for OCPPalette {
-    fn into(self) -> Palette {
+impl From<OCPPalette> for Palette {
+    fn from(val: OCPPalette) -> Self {
         Palette {
-            background: self.container_bg,
-            text: self.simple_text,
-            primary: self.light_square,
-            success: self.dark_square,
-            danger: self.tab_label,
-            warning: self.tab_label,
+            background: val.container_bg,
+            text: val.simple_text,
+            primary: val.light_square,
+            success: val.dark_square,
+            danger: val.tab_label,
+            warning: val.tab_label,
         }
     }
 }

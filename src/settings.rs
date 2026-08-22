@@ -137,7 +137,7 @@ impl SettingsTab {
                     Some(self.engine_path.clone())
                 };
                 let config = config::OfflinePuzzlesConfig {
-                    engine_path: engine_path,
+                    engine_path,
                     engine_limit: self.saved_configs.engine_limit.clone(),
                     window_width: self.window_width,
                     window_height: self.window_height,

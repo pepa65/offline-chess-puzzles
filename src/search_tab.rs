@@ -209,10 +209,10 @@ pub fn gen_piece_vec(theme: &PieceTheme) -> Vec<Handle> {
     let theme_str = &theme.to_string();
     // this first entry won't be used, it's there just to fill the vec, so we can index by the Piece
     handles.insert(0, Handle::from_path(String::from(PIECES_DIRECTORY) + "cburnett/wP.svg"));
-    handles.insert(Piece::Knight.to_index(), Handle::from_path(String::from(PIECES_DIRECTORY) + &theme_str + "/wN.svg"));
-    handles.insert(Piece::Bishop.to_index(), Handle::from_path(String::from(PIECES_DIRECTORY) + &theme_str + "/wB.svg"));
-    handles.insert(Piece::Rook.to_index(), Handle::from_path(String::from(PIECES_DIRECTORY) + &theme_str + "/wR.svg"));
-    handles.insert(Piece::Queen.to_index(), Handle::from_path(String::from(PIECES_DIRECTORY) + &theme_str + "/wQ.svg"));
+    handles.insert(Piece::Knight.to_index(), Handle::from_path(String::from(PIECES_DIRECTORY) + theme_str + "/wN.svg"));
+    handles.insert(Piece::Bishop.to_index(), Handle::from_path(String::from(PIECES_DIRECTORY) + theme_str + "/wB.svg"));
+    handles.insert(Piece::Rook.to_index(), Handle::from_path(String::from(PIECES_DIRECTORY) + theme_str + "/wR.svg"));
+    handles.insert(Piece::Queen.to_index(), Handle::from_path(String::from(PIECES_DIRECTORY) + theme_str + "/wQ.svg"));
     handles
 }
 
@@ -321,10 +321,8 @@ impl SearchTab {
                 config.last_opening_side = op_side;
 
                 let file = std::fs::File::create(SETTINGS_FILE);
-                if let Ok(file) = file {
-                    if serde_json::to_writer_pretty(file, &config).is_err() {
-                        println!("Error saving search options.");
-                    }
+                if let Ok(file) = file && serde_json::to_writer_pretty(file, &config).is_err() {
+                    println!("Error saving search options.");
                 }
             }
         }
@@ -359,13 +357,12 @@ impl SearchTab {
                 match side {
                     OpeningSide::Any => {
                         for result in reader.deserialize::<config::Puzzle>() {
-                            if let Ok(record) = result {
-                                if record.opening.contains(opening_tag) &&
-                                        record.rating >= min_rating && record.rating <= max_rating &&
-                                        record.popularity >= min_popularity &&
-                                        record.themes.contains(theme.get_tag_name()) {
-                                    puzzles.push(record);
-                                }
+                            if let Ok(record) = result &&
+                                    record.opening.contains(opening_tag) &&
+                                    record.rating >= min_rating && record.rating <= max_rating &&
+                                    record.popularity >= min_popularity &&
+                                    record.themes.contains(theme.get_tag_name()) {
+                                puzzles.push(record);
                             }
                             if puzzles.len() == result_limit {
                                 break;
@@ -373,14 +370,13 @@ impl SearchTab {
                         }
                     } OpeningSide::Black => {
                         for result in reader.deserialize::<config::Puzzle>() {
-                            if let Ok(record) = result {
-                                if record.opening.contains(opening_tag) &&
-                                        !record.game_url.contains("black") &&
-                                        record.rating >= min_rating && record.rating <= max_rating &&
-                                        record.popularity >= min_popularity &&
-                                        record.themes.contains(theme.get_tag_name()) {
-                                    puzzles.push(record);
-                                }
+                            if let Ok(record) = result &&
+                                    record.opening.contains(opening_tag) &&
+                                    !record.game_url.contains("black") &&
+                                    record.rating >= min_rating && record.rating <= max_rating &&
+                                    record.popularity >= min_popularity &&
+                                    record.themes.contains(theme.get_tag_name()) {
+                                puzzles.push(record);
                             }
                             if puzzles.len() == result_limit {
                                 break;
@@ -388,14 +384,13 @@ impl SearchTab {
                         }
                     } OpeningSide::White => {
                         for result in reader.deserialize::<config::Puzzle>() {
-                            if let Ok(record) = result {
-                                if record.opening.contains(opening_tag) &&
-                                        record.game_url.contains("black") &&
-                                        record.rating >= min_rating && record.rating <= max_rating &&
-                                        record.popularity >= min_popularity &&
-                                        record.themes.contains(theme.get_tag_name()) {
-                                    puzzles.push(record);
-                                }
+                            if let Ok(record) = result &&
+                                    record.opening.contains(opening_tag) &&
+                                    record.game_url.contains("black") &&
+                                    record.rating >= min_rating && record.rating <= max_rating &&
+                                    record.popularity >= min_popularity &&
+                                    record.themes.contains(theme.get_tag_name()) {
+                                puzzles.push(record);
                             }
                             if puzzles.len() == result_limit {
                                 break;
@@ -405,12 +400,10 @@ impl SearchTab {
                 }
             } else {
                 for result in reader.deserialize::<config::Puzzle>() {
-                    if let Ok(record) = result {
-                        if record.rating >= min_rating && record.rating <= max_rating &&
-                                record.popularity >= min_popularity &&
-                                record.themes.contains(theme.get_tag_name()) {
-                            puzzles.push(record);
-                        }
+                    if let Ok(record) = result && record.rating >= min_rating && record.rating <= max_rating &&
+                            record.popularity >= min_popularity &&
+                            record.themes.contains(theme.get_tag_name()) {
+                        puzzles.push(record);
                     }
                     if puzzles.len() == result_limit {
                         break;

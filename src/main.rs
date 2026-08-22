@@ -139,7 +139,7 @@ impl SoundPlayback {
         if let Ok(handle) = DeviceSinkBuilder::open_default_sink() {
             sound_playback = Some (
                 SoundPlayback {
-                    handle: handle,
+                    handle,
             });
     }
         sound_playback
@@ -148,14 +148,14 @@ impl SoundPlayback {
         let sink = match audio {
             SoundPlayback::ONE_PIECE_SOUND => {
                 rodio::play(
-                    &self.handle.mixer(),
+                    self.handle.mixer(),
                     BufReader::new(
                         StdFile::open(ONE_PIECE_SOUND_FILE).unwrap()
                     )).unwrap()
             },
             _ => {
                 rodio::play(
-                    &self.handle.mixer(),
+                    self.handle.mixer(),
                     BufReader::new(
                         StdFile::open(TWO_PIECES_SOUND_FILE).unwrap()
                     )).unwrap()
@@ -170,19 +170,19 @@ fn get_image_handles(theme: &PieceTheme) -> Vec<Handle> {
     let mut handles = Vec::<Handle>::with_capacity(12);
     let theme_str = &theme.to_string();
 
-    handles.insert(PieceWithColor::WhitePawn.index(), Handle::from_path(String::from("pieces/") + &theme_str + "/wP.svg"));
-    handles.insert(PieceWithColor::WhiteRook.index(), Handle::from_path(String::from("pieces/") + &theme_str + "/wR.svg"));
-    handles.insert(PieceWithColor::WhiteKnight.index(), Handle::from_path(String::from("pieces/") + &theme_str + "/wN.svg"));
-    handles.insert(PieceWithColor::WhiteBishop.index(), Handle::from_path(String::from("pieces/") + &theme_str + "/wB.svg"));
-    handles.insert(PieceWithColor::WhiteQueen.index(), Handle::from_path(String::from("pieces/") + &theme_str + "/wQ.svg"));
-    handles.insert(PieceWithColor::WhiteKing.index(), Handle::from_path(String::from("pieces/") + &theme_str + "/wK.svg"));
+    handles.insert(PieceWithColor::WhitePawn.index(), Handle::from_path(String::from("pieces/") + theme_str + "/wP.svg"));
+    handles.insert(PieceWithColor::WhiteRook.index(), Handle::from_path(String::from("pieces/") + theme_str + "/wR.svg"));
+    handles.insert(PieceWithColor::WhiteKnight.index(), Handle::from_path(String::from("pieces/") + theme_str + "/wN.svg"));
+    handles.insert(PieceWithColor::WhiteBishop.index(), Handle::from_path(String::from("pieces/") + theme_str + "/wB.svg"));
+    handles.insert(PieceWithColor::WhiteQueen.index(), Handle::from_path(String::from("pieces/") + theme_str + "/wQ.svg"));
+    handles.insert(PieceWithColor::WhiteKing.index(), Handle::from_path(String::from("pieces/") + theme_str + "/wK.svg"));
 
-    handles.insert(PieceWithColor::BlackPawn.index(), Handle::from_path(String::from("pieces/") + &theme_str + "/bP.svg"));
-    handles.insert(PieceWithColor::BlackRook.index(), Handle::from_path(String::from("pieces/") + &theme_str + "/bR.svg"));
-    handles.insert(PieceWithColor::BlackKnight.index(), Handle::from_path(String::from("pieces/") + &theme_str + "/bN.svg"));
-    handles.insert(PieceWithColor::BlackBishop.index(), Handle::from_path(String::from("pieces/") + &theme_str + "/bB.svg"));
-    handles.insert(PieceWithColor::BlackQueen.index(), Handle::from_path(String::from("pieces/") + &theme_str + "/bQ.svg"));
-    handles.insert(PieceWithColor::BlackKing.index(), Handle::from_path(String::from("pieces/") + &theme_str + "/bK.svg"));
+    handles.insert(PieceWithColor::BlackPawn.index(), Handle::from_path(String::from("pieces/") + theme_str + "/bP.svg"));
+    handles.insert(PieceWithColor::BlackRook.index(), Handle::from_path(String::from("pieces/") + theme_str + "/bR.svg"));
+    handles.insert(PieceWithColor::BlackKnight.index(), Handle::from_path(String::from("pieces/") + theme_str + "/bN.svg"));
+    handles.insert(PieceWithColor::BlackBishop.index(), Handle::from_path(String::from("pieces/") + theme_str + "/bB.svg"));
+    handles.insert(PieceWithColor::BlackQueen.index(), Handle::from_path(String::from("pieces/") + theme_str + "/bQ.svg"));
+    handles.insert(PieceWithColor::BlackKing.index(), Handle::from_path(String::from("pieces/") + theme_str + "/bK.svg"));
 
     handles
 }
@@ -210,15 +210,14 @@ fn gen_square_hashmap() -> HashMap<GenericId, Square> {
 fn san_correct_ep(fen: String) -> String {
     let mut tokens_vec: Vec<&str> = fen.split_whitespace().collect::<Vec<&str>>();
     let mut new_ep_square = String::from("-");
-    if let Some(en_passant) = tokens_vec.get(3) {
-        if en_passant != &"-" {
+    if let Some(en_passant) = tokens_vec.get(3)
+        && en_passant != &"-" {
             let rank = if String::from(&en_passant[1..2]).parse::<usize>().unwrap() == 4 {
                 3
             } else {
                 6
             };
             new_ep_square = String::from(&en_passant[0..1]) + &rank.to_string();
-        }
     }
     tokens_vec[3] = &new_ep_square;
     tokens_vec.join(" ")
@@ -231,8 +230,8 @@ fn get_notation_string(board: Board, promo_piece: Piece, from: Square, to: Squar
     let color = board.color_on(from);
 
     // Check for promotion and adjust the notation accordingly
-    if let (Some(piece), Some(color)) = (piece, color) {
-        if piece == Piece::Pawn && ((color == Color::White && to.get_rank() == Rank::Eighth) ||
+    if let (Some(piece), Some(color)) = (piece, color)
+        && piece == Piece::Pawn && ((color == Color::White && to.get_rank() == Rank::Eighth) ||
                                    (color == Color::Black && to.get_rank() == Rank::First)) {
             match promo_piece {
                 Piece::Rook => move_made_notation += "r",
@@ -240,7 +239,6 @@ fn get_notation_string(board: Board, promo_piece: Piece, from: Square, to: Squar
                 Piece::Bishop => move_made_notation += "b",
                 _ => move_made_notation += "q"
             }
-        }
     }
     move_made_notation
 }
@@ -359,15 +357,13 @@ impl OfflinePuzzles {
             if self.analysis.make_move(move_made) {
                 self.analysis_history.push(self.analysis.current_position());
                 self.engine.position = self.analysis.current_position().to_string();
-                if let Some(sender) = &self.engine_sender {
-                    if let Err(e) = sender.blocking_send(san_correct_ep(self.analysis.current_position().to_string())) {
+                if let Some(sender) = &self.engine_sender
+                    && let Err(e) = sender.blocking_send(san_correct_ep(self.analysis.current_position().to_string())) {
                         eprintln!("Lost contact with the engine: {}", e);
-                    }
                 }
-                if self.settings_tab.saved_configs.play_sound {
-                    if let Some(audio) = &self.sound_playback {
+                if self.settings_tab.saved_configs.play_sound
+                    && let Some(audio) = &self.sound_playback {
                         audio.play_audio(SoundPlayback::ONE_PIECE_SOUND);
-                    }
                 }
             }
         } else if !self.puzzle_tab.puzzles.is_empty() {
@@ -395,10 +391,9 @@ impl OfflinePuzzles {
                 self.puzzle_tab.current_puzzle_move += 1;
 
                 if self.puzzle_tab.current_puzzle_move == correct_moves.len() {
-                    if self.settings_tab.saved_configs.play_sound {
-                        if let Some(audio) = &self.sound_playback {
+                    if self.settings_tab.saved_configs.play_sound
+                        && let Some(audio) = &self.sound_playback {
                             audio.play_audio(SoundPlayback::ONE_PIECE_SOUND);
-                        }
                     }
                     if self.puzzle_tab.current_puzzle < self.puzzle_tab.puzzles.len() - 1 {
                         if self.settings_tab.saved_configs.auto_load_next {
@@ -423,10 +418,9 @@ impl OfflinePuzzles {
                         self.puzzle_status = lang::tr(&self.lang, "all_puzzles_done");
                     }
                 } else {
-                    if self.settings_tab.saved_configs.play_sound {
-                        if let Some(audio) = &self.sound_playback {
+                    if self.settings_tab.saved_configs.play_sound
+                        && let Some(audio) = &self.sound_playback {
                             audio.play_audio(SoundPlayback::TWO_PIECE_SOUND);
-                        }
                     }
                     movement = ChessMove::new(
                         Square::from_str(&String::from(&correct_moves[self.puzzle_tab.current_puzzle_move][..2])).unwrap(),
@@ -542,10 +536,9 @@ impl OfflinePuzzles {
                 if message == config::GameMode::Analysis {
                     self.analysis = Game::new_with_board(self.board);
                 } else {
-                    if self.engine_state != EngineStatus::TurnedOff {
-                        if let Some(sender) = &self.engine_sender {
+                    if self.engine_state != EngineStatus::TurnedOff
+                        && let Some(sender) = &self.engine_sender {
                             sender.blocking_send(String::from(eval::STOP_COMMAND)).expect("Error stopping engine.");
-                        }
                     }
                     self.analysis_history.truncate(self.puzzle_tab.current_puzzle_move);
                 }
@@ -573,10 +566,9 @@ impl OfflinePuzzles {
                 if self.game_mode == config::GameMode::Analysis && self.analysis_history.len() > self.puzzle_tab.current_puzzle_move {
                     self.analysis_history.pop();
                     self.analysis = Game::new_with_board(*self.analysis_history.last().unwrap());
-                    if let Some(sender) = &self.engine_sender {
-                        if let Err(e) = sender.blocking_send(san_correct_ep(self.analysis.current_position().to_string())) {
+                    if let Some(sender) = &self.engine_sender
+                        && let Err(e) = sender.blocking_send(san_correct_ep(self.analysis.current_position().to_string())) {
                             eprintln!("Lost contact with the engine: {}", e);
-                        }
                     }
                 }
                 Task::none()
@@ -587,10 +579,9 @@ impl OfflinePuzzles {
                 self.from_square = None;
                 self.search_tab.show_searching_msg = false;
                 self.game_mode = config::GameMode::Puzzle;
-                if self.engine_state != EngineStatus::TurnedOff {
-                    if let Some(sender) = &self.engine_sender {
+                if self.engine_state != EngineStatus::TurnedOff
+                    && let Some(sender) = &self.engine_sender {
                         sender.blocking_send(String::from(eval::STOP_COMMAND)).expect("Error stopping engine.");
-                    }
                 }
                 if let Some(puzzles_vec) = puzzles_vec {
                     if !puzzles_vec.is_empty() {
@@ -640,11 +631,10 @@ impl OfflinePuzzles {
             } (_, Message::JumpToPuzzle) => {
                 // Test if puzzle index typed is valid
                 let puzzle_index = self.puzzle_number_ui.parse::<usize>();
-                if let Ok(index) = puzzle_index {
-                    if index > 0 && index <= self.puzzle_tab.puzzles.len() {
+                if let Ok(index) = puzzle_index
+                    && index > 0 && index <= self.puzzle_tab.puzzles.len() {
                         // The user typed value starts on 1, not zero, so we subtract 1
                         self.puzzle_tab.current_puzzle = index - 1;
-                    }
                 }
                 self.load_puzzle(false);
                 Task::none()
@@ -770,14 +760,13 @@ impl OfflinePuzzles {
                             } else {
                                 // Invert to keep the values relative to white,
                                 // like it's usually done in GUIs.
-                                let eval = (eval_str.parse::<f32>().unwrap() * -1.).to_string();
+                                let eval = (-eval_str.parse::<f32>().unwrap()).to_string();
                                 self.engine_eval = eval.to_string().clone();
                             }
                         }
-                        if let Some(best_move) = best_move {
-                            if let Some(best_move) = config::coord_to_san(&self.analysis.current_position(), best_move, &self.lang) {
+                        if let Some(best_move) = best_move
+                            && let Some(best_move) = config::coord_to_san(&self.analysis.current_position(), best_move, &self.lang) {
                                 self.engine_move = best_move;
-                            }
                         }
                         Task::none()
                     }
@@ -802,7 +791,7 @@ impl OfflinePuzzles {
             } (_, Message::MinimizeUI) => {
                 if self.mini_ui {
                     self.mini_ui = false;
-                    let new_size = Size::new(self.settings_tab.window_width as f32, self.settings_tab.window_height as f32);
+                    let new_size = Size::new(self.settings_tab.window_width, self.settings_tab.window_height);
                     iced::window::resize(self.window_id.unwrap(), new_size)
                 } else {
                     self.mini_ui = true;
@@ -811,7 +800,7 @@ impl OfflinePuzzles {
                         // is a square, we make the width the same as the height,
                         // with just a bit extra for the > button
                         Size::new((self.settings_tab.window_height - 120.) + 25.,
-                        self.settings_tab.window_height as f32);
+                        self.settings_tab.window_height);
                     iced::window::resize(self.window_id.unwrap(), new_size)
                 }
             } (_, Message::DropPiece(square, cursor_pos, _bounds)) => {
@@ -993,8 +982,8 @@ fn gen_view<'a>(
     lang: &lang::Language,
     size: Size,
     mini_ui: bool,
-    board_ids: &Vec<GenericId>,
-    imgs: &Vec<Handle>,
+    board_ids: &[GenericId],
+    imgs: &[Handle],
 ) -> Element<'a, Message, Theme, iced::Renderer> {
 
     let font = piece_theme == PieceTheme::FontAlpha;
@@ -1270,7 +1259,7 @@ fn gen_view<'a>(
     let pagination_row = row![
         text(lang::tr(lang, "puzzle")),
         input_index,
-        text(String::from(lang::tr(lang, "of")) + &total_puzzles.to_string()),
+        text(lang::tr(lang, "of") + &total_puzzles.to_string()),
         btn_go
     ].spacing(10).align_y(Alignment::Center);
 
@@ -1328,8 +1317,8 @@ trait Tab {
 fn main() -> iced::Result {
     let window_settings = iced::window::Settings {
             size: Size {
-                width: config::SETTINGS.window_width as f32, //(config::SETTINGS.square_size * 8) as u32 + 450,
-                height: config::SETTINGS.window_height as f32,//(config::SETTINGS.square_size * 8) as u32 + 120,
+                width: config::SETTINGS.window_width, //(config::SETTINGS.square_size * 8) as u32 + 450,
+                height: config::SETTINGS.window_height,//(config::SETTINGS.square_size * 8) as u32 + 120,
             },
             resizable: true,
             exit_on_close_request: false,

@@ -3,14 +3,13 @@ use std::str::FromStr;
 use lopdf::dictionary;
 use lopdf::{Document, Object, Stream};
 use lopdf::content::{Content, Operation};
-use chrono;
 use chess::{Board, ChessMove, Color, Piece, Square};
 
 use crate::{config, PuzzleTab, lang};
 
 // This is basically all copy-pasted from the lopdf example, I left the comments
 // as they might be useful.
-pub fn to_pdf(puzzles: &Vec<config::Puzzle>, number_of_pages: i32, lang: &lang::Language, path: String) {
+pub fn to_pdf(puzzles: &[config::Puzzle], number_of_pages: i32, lang: &lang::Language, path: String) {
 
     // Create a document object and add the font and font descriptor to it
     let mut doc = Document::with_version("1.5");
@@ -311,23 +310,23 @@ fn gen_diagram_operations(index: usize, puzzle: &config::Puzzle, start_x:i32, st
     ops
 }
 
-pub fn to_pgn(puzzles: &Vec<config::Puzzle>, lang: &lang::Language, path: String) {
+pub fn to_pgn(puzzles: &[config::Puzzle], lang: &lang::Language, path: String) {
     let mut pgn_content = String::new();
 
-    for (_puzzle_index, puzzle) in puzzles.iter().enumerate() {
+    for puzzle in puzzles.iter() {
         // Start with a board from the FEN
         let mut board = Board::from_str(&puzzle.fen).unwrap();
 
         // Add PGN headers
-        pgn_content.push_str(&format!("[Event \"Chess Puzzle\"]\n"));
+        pgn_content.push_str("[Event \"Chess Puzzle\"]\n");
         pgn_content.push_str(&format!("[Site \"https://lichess.org/training/{}\"]\n", puzzle.puzzle_id));
         pgn_content.push_str(&format!("[Date \"{}\"]\n", chrono::Local::now().format("%Y.%m.%d")));
         pgn_content.push_str(&format!("[White \"{}\"]\n", if board.side_to_move() == Color::White { "Player" } else { "Opponent" }));
         pgn_content.push_str(&format!("[Black \"{}\"]\n", if board.side_to_move() == Color::Black { "Player" } else { "Opponent" }));
-        pgn_content.push_str(&format!("[Result \"*\"]\n"));
+        pgn_content.push_str("[Result \"*\"]\n");
         pgn_content.push_str(&format!("[GameID \"{}\"]\n", puzzle.game_url));
         pgn_content.push_str(&format!("[FEN \"{}\"]\n", puzzle.fen));
-        pgn_content.push_str(&format!("[SetUp \"1\"]\n"));
+        pgn_content.push_str("[SetUp \"1\"]\n");
         if !puzzle.opening.is_empty() {
             pgn_content.push_str(&format!("[Opening \"{}\"]\n", puzzle.opening));
         }
@@ -369,7 +368,7 @@ pub fn to_pgn(puzzles: &Vec<config::Puzzle>, lang: &lang::Language, path: String
             if is_white_to_move {
                 pgn_content.push_str(&format!(" {}. ", move_number));
             } else {
-                pgn_content.push_str(" ");
+                pgn_content.push(' ');
             }
 
             let san_move = config::coord_to_san(&board, String::from(*chess_move), lang).unwrap();

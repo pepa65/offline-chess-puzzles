@@ -63,7 +63,7 @@ impl PuzzleTab {
             } PuzzleMessage::ExportToPDF => {
                 Task::perform(PuzzleTab::export("pdf"), Message::ExportPDF)
             } PuzzleMessage::ExportToPGN => {
-                return Task::perform(PuzzleTab::export("pgn"), Message::ExportPGN);
+                Task::perform(PuzzleTab::export("pgn"), Message::ExportPGN)
             }
         }
     }

@@ -41,7 +41,7 @@ impl Engine {
         Self {
             engine_path: path.unwrap_or_default(),
             search_up_to: limit,
-            position: position,
+            position,
         }
     }
 
@@ -158,7 +158,7 @@ impl Engine {
                                     continue;
                                 } else {
                                     let pos = String::from("position fen ") + &msg + &String::from("\n");
-                                    let limit = String::from("go ") + &search_up_to + "\n";
+                                    let limit = String::from("go ") + search_up_to + "\n";
                                     child.stdin.as_mut().unwrap().write_all(b"stop\n").await.expect("Error communicating with engine");
                                     //child.stdin.as_mut().unwrap().write_all(b"setoption name UCI_AnalyseMode value true\n").await.expect("Error communicating with engine");
                                     //child.stdin.as_mut().unwrap().write_all(b"ucinewgame\n").await.expect("Error communicating with engine");
@@ -191,14 +191,12 @@ impl Engine {
                                                 }
                                             }
                                             for i in (index + 3)..vector.len() {
-                                                if let Some(token) = vector.get(i) {
-                                                    if token == &"pv" {
-                                                        // I thought we could just unwrap, but at least Koivisto sometimes
-                                                        // returns lines with nothing in the pv
-                                                        if let Some(best) = vector.get(i+1) {
-                                                            best_move = Some(best.to_string());
-                                                            break;
-                                                        }
+                                                if let Some(token) = vector.get(i) && token == &"pv" {
+                                                    // I thought we could just unwrap, but at least Koivisto sometimes
+                                                    // returns lines with nothing in the pv
+                                                    if let Some(best) = vector.get(i+1) {
+                                                        best_move = Some(best.to_string());
+                                                        break;
                                                     }
                                                 }
                                             }

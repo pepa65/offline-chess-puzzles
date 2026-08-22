@@ -81,7 +81,7 @@ pub fn tr(lang: &Language, key: &str) -> String {
         Language::Chinese => &BUNDLE_CN,
         Language::Dutch => &BUNDLE_NL,
     };
-    let msg = bundle.get_message(key).expect(&("Missing translation key ".to_owned() + key));
+    let msg = bundle.get_message(key).unwrap_or_else(|| panic!("{}", ("Missing translation key ".to_owned() + key)));
     let mut errors = vec![];
     let pattern = msg.value().expect("Missing Value.");
     bundle.format_pattern(pattern, None, &mut errors).to_string()

@@ -88,7 +88,7 @@ impl PickListWrapper<Openings> {
         for opening in Openings::ALL {
             openings_wrapper.push(
                 PickListWrapper::<Openings> {
-                    lang: lang,
+                    lang,
                     item: opening,
                 }
             );
@@ -379,7 +379,7 @@ impl PickListWrapper<Variation> {
             for variation in variations {
                 openings_wrapper.push(
                     PickListWrapper::<Variation> {
-                        lang: lang,
+                        lang,
                         item: variation,
                     }
                 );
@@ -390,7 +390,7 @@ impl PickListWrapper<Variation> {
 
     pub fn new_variation(lang: lang::Language, var: Variation) -> Self {
         Self {
-            lang: lang,
+            lang,
             item: var,
         }
     }

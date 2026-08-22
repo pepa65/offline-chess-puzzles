@@ -71,14 +71,14 @@ fn download_stream() -> impl Stream<Item = Message> {
                                     response,
                                     file,
                                     total,
-                                    downloaded: downloaded,
+                                    downloaded,
                                 };
                             }
                             Ok(None) =>  {
                                 file.flush().expect("Error flushing lichess db archive file.");
                                 file.rewind().expect("Error rewinding lichess db archive file.");
 
-                                let target = std::fs::File::create(path.clone()).expect(&("Error creating file ".to_owned() + &path));
+                                let target = std::fs::File::create(path.clone()).unwrap_or_else(|_| panic!("{}", ("Error creating file ".to_owned() + &path)));
                                 zstd::stream::copy_decode(file, target).unwrap();
 
                                 let _ = std::fs::remove_file(&lichess_zst_file);

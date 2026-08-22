@@ -24,7 +24,7 @@ pub const TWO_PIECES_SOUND_FILE: &str = "2pieces.ogg";
 pub const DATABASE_URL: &str = "ocp.db";
 
 // Iced widget IDs need to be static
-pub static BTN_IDS: [&'static str; 64] = [
+pub static BTN_IDS: [&str; 64] = [
     "0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
     "10", "11", "12", "13", "14", "15", "16", "17", "18", "19",
     "20", "21", "22", "23", "24", "25", "26", "27", "28", "29",
