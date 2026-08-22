@@ -1,5 +1,6 @@
 use diesel::sqlite::SqliteConnection;
 use diesel::prelude::*;
+use diesel_migrations::{embed_migrations, EmbeddedMigrations, MigrationHarness};
 use dotenvy::dotenv;
 use std::env;
 
@@ -11,12 +12,18 @@ use crate::config::Puzzle;
 use crate::search_tab::{TacticalThemes, OpeningSide};
 use crate::openings::{Openings, Variation};
 
+pub const MIGRATIONS: EmbeddedMigrations = embed_migrations!("migrations");
+
 pub fn establish_connection() -> SqliteConnection {
     dotenv().ok();
 
     let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
-    SqliteConnection::establish(&database_url)
-        .unwrap_or_else(|_| panic!("Error connecting to {}", database_url))
+
+    let mut connection = SqliteConnection::establish(&database_url)
+        .unwrap_or_else(|_| panic!("Error connecting to {}", database_url));
+    let _ = connection.run_pending_migrations(MIGRATIONS);
+
+    connection
 }
 
 pub fn get_favorites(min_rating: i32, max_rating: i32, min_popularity: i32, theme: TacticalThemes, opening: Openings, variation: Variation, op_side: Option<OpeningSide>, result_limit: usize) -> Option<Vec<Puzzle>> {
